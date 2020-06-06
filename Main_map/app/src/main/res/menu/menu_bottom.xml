@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tab1"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="안심지도"/>
+    <item
+        android:id="@+id/tab2"
+        android:icon="@drawable/find"
+        android:title="길찾기" />
+    <item
+        android:id="@+id/tab3"
+        android:icon="@drawable/sos"
+        android:title="SOS" />
+    <item
+        android:id="@+id/tab4"
+        android:icon="@drawable/match"
+        android:title="매칭" />
+
+</menu>
