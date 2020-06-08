@@ -1,0 +1,2 @@
+Github과 Slack 연동 확인용 commit
+( 추후 삭제 예정 ) 
