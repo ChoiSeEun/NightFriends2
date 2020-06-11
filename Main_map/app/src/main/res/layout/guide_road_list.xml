@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/road_time"
@@ -11,8 +12,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:text="ㅁㅁ분"
+        android:background="#00ff0000"
         android:textColor="@color/nf"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:textStyle="bold"></TextView>
     <LinearLayout
         android:orientation="vertical"
@@ -25,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="경로 상세 안내"
             android:id="@+id/road_detail"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:textColor="#000000">
         </TextView>
@@ -38,7 +40,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="안전 지수 ㅁㅁ%"
                 android:id="@+id/safe_score"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textColor="@color/nf"
                 android:layout_marginTop="6dp">
             </TextView>
