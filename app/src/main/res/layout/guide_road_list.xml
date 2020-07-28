@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/road_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="ㅁㅁ분"
+        android:textColor="@color/nf"
+        android:textSize="30dp"
+        android:textStyle="bold"></TextView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="경로 상세 안내"
+            android:id="@+id/road_detail"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="#000000">
+        </TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="안전 지수 ㅁㅁ%"
+                android:id="@+id/safe_score"
+                android:textSize="30dp"
+                android:textColor="@color/nf"
+                android:layout_marginTop="6dp">
+            </TextView>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="매칭"
+                android:id="@+id/matching_button"
+                android:textSize="20dp"
+                android:background="@color/nf"
+                android:textColor="@color/nf2">
+            </Button>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

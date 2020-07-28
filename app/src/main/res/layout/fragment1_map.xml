@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.main_map.Night_main">
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="장소 검색" />
+
+        <ImageButton
+            android:id="@+id/bt_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/ic_menu_search" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_cctv_onoff"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/cctv_bt" />
+
+        <Button
+            android:id="@+id/bt_lamp_onoff"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/bt_cctv_onoff"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/lamp_bt" />
+
+        <Button
+            android:id="@+id/bt_map_setting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/bt_lamp_onoff"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/baseline_settings_black_18" />
+
+        <Button
+            android:id="@+id/bt_mail_save"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="55dp"
+            android:background="@drawable/baseline_local_post_office_black_18" />
+
+        <Button
+            android:id="@+id/bt_my_position"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="55dp"
+            android:background="@drawable/position_bt" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
