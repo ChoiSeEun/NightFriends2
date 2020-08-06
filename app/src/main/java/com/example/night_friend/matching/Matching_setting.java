@@ -1,8 +1,10 @@
-package com.example.main_map;
+package com.example.night_friend.matching;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.night_friend.R;
 
 public class Matching_setting extends AppCompatActivity {
 

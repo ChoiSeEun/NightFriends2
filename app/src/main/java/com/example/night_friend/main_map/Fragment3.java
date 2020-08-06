@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.main_map;
 
 import androidx.fragment.app.Fragment;
 
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.night_friend.R;
 
 
 public class Fragment3 extends Fragment implements View.OnClickListener {

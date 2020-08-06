@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.main_map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.night_friend.R;
 
 public class SOS_setting extends AppCompatActivity {
     CheckBox cb_sos,cb_112,cb_all;

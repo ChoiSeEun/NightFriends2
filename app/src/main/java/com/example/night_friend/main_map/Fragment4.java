@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.main_map;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.night_friend.R;
+import com.example.night_friend.matching.BaseAdapterEx;
+import com.example.night_friend.matching.Matching_setting;
+import com.example.night_friend.matching.matching_data;
 
 import java.util.ArrayList;
 

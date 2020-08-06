@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.main_map;
 
 public class mPoint {
     private String mediName;

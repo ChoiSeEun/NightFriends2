@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.Guide;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.night_friend.R;
 
 public class GuideListView extends LinearLayout {
     TextView timeText;

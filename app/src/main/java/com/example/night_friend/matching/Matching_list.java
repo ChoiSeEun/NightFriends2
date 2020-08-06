@@ -1,4 +1,4 @@
-package com.example.main_map;
+package com.example.night_friend.matching;
 
 public class Matching_list {
     String time;
