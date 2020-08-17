@@ -1,21 +1,21 @@
 package com.example.main_map;
 
 public class Matching_list {
-    String time;
+    Integer time;
     String road;
     String score;
     String text;
 
-    public Matching_list(String time, String road, String score, String text){
+    public Matching_list(Integer time, String road, String score, String text){
         this.time = time;
         this.road = road;
         this.score = score;
         this.text = text;
     }
-    public void setTime(String time){
+    public void setTime(Integer time){
         this.time = time;
     }
-    public String getTime(){
+    public Integer getTime(){
         return time;
     }
     public void setRoad(String road){

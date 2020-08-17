@@ -14,17 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_security_config">
+
         <activity android:name=".Matching_setting"/>
         <activity android:name=".SOS_setting"/>
-        <activity android:name=".GuideActivity"/>
+        <activity android:name=".GuideActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Night_main">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
     </application>
 

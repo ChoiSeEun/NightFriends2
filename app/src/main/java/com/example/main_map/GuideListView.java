@@ -3,8 +3,10 @@ package com.example.main_map;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class GuideListView extends LinearLayout {
@@ -29,9 +31,16 @@ public class GuideListView extends LinearLayout {
         roadText = (TextView) findViewById(R.id.road_detail);
         scoreText = (TextView) findViewById(R.id.safe_score);
         matchingBtn = (Button) findViewById(R.id.matching_button);
+
+        matchingBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
-    public void setTimeText(String time){
-        timeText.setText(time);
+    public void setTimeText(Integer time){
+        timeText.setText(""+time+"분");
     }
     public void setRoadText(String road){
         roadText.setText(road);

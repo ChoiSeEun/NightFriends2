@@ -5,20 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Switch
-        android:id="@+id/switch2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="매칭  "
-        android:textColor="@color/nf"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.295" />
-
+    <FrameLayout
+        android:id="@+id/guide_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <EditText
         android:id="@+id/startText2"
         android:layout_width="wrap_content"
@@ -97,9 +87,10 @@
         android:layout_centerInParent="true"
         android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22000003"
-        tools:layout_editor_absoluteX="10dp" />
+        app:layout_constraintVertical_bias="0.22000003" />
 
     <Button
         android:id="@+id/bt_matching_search"
@@ -109,20 +100,38 @@
         android:text="경로 옵션 변경"
         android:textColor="@color/nf2"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/switch2"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintVertical_bias="0.065" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="매칭  "
+        android:textColor="@color/nf"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.951"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.284" />
+        app:layout_constraintVertical_bias="0.295" />
+
 
     <ListView
         android:id="@+id/road_list"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_width="354dp"
+        android:layout_height="457dp"
+        android:layout_marginTop="23dp"
+        android:descendantFocusability="afterDescendants"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.845"></ListView>
+        app:layout_constraintTop_toBottomOf="@+id/switch2"
+        app:layout_constraintVertical_bias="0.0"></ListView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

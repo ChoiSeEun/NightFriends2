@@ -1,10 +1,14 @@
 package com.example.main_map;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,14 +18,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skt.Tmap.TMapCircle;
+import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -29,17 +49,147 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 
 public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChangedCallback{
 
-    private Context mContext = null;
+    //private static Context mContext = null;
+
+    private static FragmentActivity mContext = null;
     private boolean m_bTrackingMode = true;
-    private TMapView mapView = null;
-    private BitmapFactory itmapFactory;
+    private static TMapView mapView = null;
+    private static BitmapFactory itmapFactory;
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "code";
+
+    private String mParam1;
+    private Integer mParam2;
+
+    static String startName = null;
+    static String endName = null;
+    static TMapPoint startPoint = null;
+    static TMapPoint endPoint = null;
+
+    Double start_lat=null;
+    Double start_lon=null;
+    Double end_lat=null;
+    Double end_lon=null;
+
+    public Fragment1(){
+
+    }
+
+    public static Fragment1 newInstance(String param1, final Integer code){
+        final Fragment1 fragment1 = new Fragment1();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM2, code);
+        fragment1.setArguments(args);
+
+        Log.e("New Instance","");
+        //Fragment2에서 넘어온 데이터로 POI 검색하기
+        TMapData tmapdata = new TMapData();
+        tmapdata.findAllPOI(param1, new TMapData.FindAllPOIListenerCallback() {
+            TMapPoint mp = null;
+            double x, y;
+            @Override
+            public void onFindAllPOI(ArrayList poiItem) {
+                for(int i = 0; i < poiItem.size(); i++) {
+                    TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
+                    TMapMarkerItem mk = new TMapMarkerItem();
+                    x = item.getPOIPoint().getLatitude();
+                    y = item.getPOIPoint().getLongitude();
+                    mp = item.getPOIPoint();
+
+                    Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
+
+                    mk.setName(item.getPOIName());
+                    mk.setIcon(bitmap);
+                    mk.setTMapPoint(mp);
+
+                    mk.setCalloutTitle(item.getPOIName());
+                    mk.setCanShowCallout(true);
+
+                    Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_stat_name);
+                    mk.setCalloutRightButtonImage(bitmap2);
+
+                    mapView.addMarkerItem("markerItem" + i, mk);
+
+
+                    //풍선뷰 클릭시 위도/경도 받기
+                    mapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
+                        @Override
+                        public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                            if(!arrayList.isEmpty()){
+                                if(code==101) {
+                                    startName = arrayList.get(0).getName();
+                                    startPoint = arrayList.get(0).getTMapPoint();
+                                    Log.e("마커 이름: ",""+startName);
+                                    Log.e("마커의 위도/경도: ",""+arrayList.get(0).getTMapPoint());
+                                }
+                                else if(code==102){
+                                    endName = arrayList.get(0).getName();
+                                    endPoint = arrayList.get(0).getTMapPoint();
+                                    Log.e("마커 이름:",""+endName);
+                                    Log.e("마커의 위도/경도: ",""+arrayList.get(0).getTMapPoint());
+                                }
+
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                            return false;
+                        }
+                    });
+
+                    //풍선뷰 아이콘 클릭시 출발지/도착지 설정 및 길찾기 화면으로 이동
+                    mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+                        @Override
+                        public void onCalloutRightButton(TMapMarkerItem markerItem) {
+                            if(code==101){
+                                ((Night_main)mContext).replaceFragment(Fragment2.newInstance(startName, endName, 101, startPoint.getLatitude(), startPoint.getLongitude()));
+                            }
+                            else if(code==102) {
+                                ((Night_main) mContext).replaceFragment(Fragment2.newInstance(startName, endName,102, endPoint.getLatitude(), endPoint.getLongitude()));
+                            }
+                            Log.d("풍선뷰 Click: ", "선택 됨");
+                        }
+                    });
+
+                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+                            "Point: " + item.getPOIPoint().toString());
+
+                }
+            }
+        });
+
+
+        return fragment1;
+    }
+
+    //다른 프래그먼트에서 넘어오는 데이터 저장
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getInt(ARG_PARAM2);
+        }
+
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,6 +219,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         //onMapCircle(mapView);
 
         readData_lamp();  //가로등 csv 파일 읽기
+        set_zero();
 
         //가로등 버튼 터치시 마커 표시
         lamp_btn.setOnClickListener(new View.OnClickListener(){
@@ -96,9 +247,68 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             }
         });
 
+        Bundle bundle = getArguments();
 
+        if(bundle!=null) {
+            start_lat = bundle.getDouble("start_lat");
+            start_lon = bundle.getDouble("start_lon");
+            end_lat = bundle.getDouble("end_lat");
+            end_lon = bundle.getDouble("end_lon");
+
+            //넘어온 데이터로 polyline 그리기
+            TMapData tMapData = new TMapData();
+            TMapPoint point1 = new TMapPoint(start_lat, start_lon);
+            TMapPoint point2 = new TMapPoint(end_lat, end_lon);
+            ArrayList passList = null; //경유지 List
+            Log.e("넘어온 데이터 start_lat",""+start_lat);
+            Log.e("넘어온 데이터 start_lon",""+start_lon);
+            Log.e("넘어온 데이터 end_lat",""+end_lat);
+            Log.e("넘어온 데이터 end_lon",""+end_lon);
+
+            //searchOption 부여하여 경로 그리기
+            tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
+                    new TMapData.FindPathDataListenerCallback() {
+                        @Override
+                        public void onFindPathData(TMapPolyLine polyLine) {
+                            Log.e("폴리라인 그리기","");
+                            mapView.addTMapPath(polyLine);
+
+                        }
+                    });
+        }
+
+
+        //api 호출 없이 tmap api에 정의된 함수를 통해 경로안내 xml 데이터 가져오기
+        /* tMapData.findPathDataAllType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, new TMapData.FindPathDataAllListenerCallback() {
+            @Override
+            public void onFindPathDataAll(Document document) {
+                Element root = document.getDocumentElement();
+                NodeList nodeListPlacemark = root.getElementsByTagName("Placemark");
+
+                for( int i=0; i<nodeListPlacemark.getLength(); i++ ) {
+                    NodeList nodeListPlacemarkItem = nodeListPlacemark.item(i).getChildNodes();
+                    for( int j=0; j<nodeListPlacemarkItem.getLength(); j++ ) {
+                        if( nodeListPlacemarkItem.item(j).getNodeName().equals("LineString") ) {
+                            //NodeList nod = nodeListPlacemarkItem.item(j).getChildNodes();
+
+                            Log.d("debug", nodeListPlacemarkItem.item(j).getNodeValue());
+                        }
+                    }
+                }
+            }
+        }); */
+
+        Log.d("Test", "Param1: "+mParam1);
 
         return v;
+    }
+
+    public void set_zero(){
+        start_lat=0.0;
+        start_lon=0.0;
+        end_lat=0.0;
+        end_lon=0.0;
+
     }
 
     //마커 표시 테스트
@@ -146,7 +356,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
     }
 
-    //csv 파일 이용
+    //csv 파일 이용 데이터 읽어오기
     private List<test> testList=new ArrayList<>();
 
     private void readData_lamp() {
@@ -184,6 +394,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         }
     }
 
+    //가로등 마커 표시
     public void securityLight(final TMapView mapView){
         TMapPoint mp = null;
         double x, y;
@@ -218,4 +429,3 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         }
     }
 }
-

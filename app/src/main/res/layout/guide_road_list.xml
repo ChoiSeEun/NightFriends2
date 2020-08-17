@@ -12,9 +12,11 @@
         android:layout_marginTop="10dp"
         android:text="ㅁㅁ분"
         android:textColor="@color/nf"
+
         android:textSize="30dp"
         android:textStyle="bold"></TextView>
     <LinearLayout
+        android:id = "@+id/clickArea"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

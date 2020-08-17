@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,9 +37,8 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottombar_main);
 
-
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
+        //fragmentTransaction.add(R.id.container, Fragment2.newInstance(null)).commit();
 
         fragment1 = new Fragment1();
         fragment2 = new Fragment2();
@@ -44,6 +46,23 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
         fragment4 = new Fragment4();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment1).commit();
+
+        Intent intent = getIntent();
+
+        if (this.getIntent().getExtras()!=null && this.getIntent().getExtras().containsKey("code")){
+            Log.e("여기까진..","성공..");
+            Double start_lat = intent.getExtras().getDouble("start_lat");
+            Double start_lon = intent.getExtras().getDouble("start_lon");
+            Double end_lat = intent.getExtras().getDouble("end_lat");
+            Double end_lon = intent.getExtras().getDouble("end_lon");
+
+            Bundle bundle = new Bundle(4);
+            bundle.putDouble("start_lat", start_lat);
+            bundle.putDouble("start_lon", start_lon);
+            bundle.putDouble("end_lat", end_lat);
+            bundle.putDouble("end_lon", end_lon);
+            fragment1.setArguments(bundle);
+        }
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(
@@ -142,5 +161,12 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
             }
         },5000);
 
+    }
+
+    //프래그먼트 전환 함수
+    public void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment).commit();
     }
 }
