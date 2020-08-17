@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:id="@+id/lamp"
+        android:hint="가로등 개수를 입력해주세요"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:id="@+id/cctv"
+        android:hint="cctv 개수를 입력해주세요"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:id="@+id/crimY"
+        android:hint="우범지역이면 1을 입력, 아니면 0을 입력해주세요"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:id="@+id/crimN"
+        android:hint="우범지역이면 0을 입력, 아니면 1을 입력해주세요"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/EntertainY"
+        android:hint="유흥업소지역이면 1을 입력, 아니면 0을 입력해주세요"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:digits="0123456789"
+        android:id="@+id/EntertainN"
+        android:hint="유흥업소지역이면 0을 입력, 아니면 1을 입력해주세요"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button1"
+        android:text="안전 지수 확인"/>
+
+    <TextView
+        android:id="@+id/safescore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안전지수"
+        android:textSize="30dp"
+        android:textColor="@android:color/holo_red_dark" />
+</LinearLayout>
