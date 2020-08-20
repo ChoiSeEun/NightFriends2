@@ -58,7 +58,7 @@ public class GuideActivity extends AppCompatActivity {
         startLocation = (EditText) findViewById(R.id.startText2);
         endLocation = (EditText) findViewById(R.id.endText2);
 
-
+        //Fragment2에서 넘어온 데이터
         Intent intent = getIntent();
         start_lat = intent.getExtras().getDouble("start_lat");
         start_lon = intent.getExtras().getDouble("start_lon");
@@ -77,10 +77,7 @@ public class GuideActivity extends AppCompatActivity {
         listView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
         adapter = new GuideAdapter();
 
-        //TMapData tMapData = new TMapData();
-        //TMapPoint point1 = new TMapPoint(start_lat, start_lon);
-        //TMapPoint point2 = new TMapPoint(end_lat, end_lon);
-
+        //리스트 추가
         adapter.addItem(new Matching_list(time,"***->***->***->***",safe_score,"매칭"));
         //adapter.addItem(new Matching_list(20,"***->***->***->***","87%","매칭"));
         //adapter.addItem(new Matching_list("26분","***->***->***->***","79%","매칭"));
@@ -117,7 +114,7 @@ public class GuideActivity extends AppCompatActivity {
             view.setScoreText(item.getScore());
             view.setMatchingBtn(item.getText());
 
-
+            //리스트 클릭시 GuideActivity로 데이터 넘기기 & 화면 이동
             LinearLayout clickArea = (LinearLayout)view.findViewById(R.id.clickArea);
             clickArea.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
@@ -128,8 +125,6 @@ public class GuideActivity extends AppCompatActivity {
                     intent.putExtra("end_lon",end_lon);
                     intent.putExtra("code",103);
                     startActivity(intent);
-
-                    Log.e("리스트 클릭: ","성공~!~!~!~!");
                 }
             });
 

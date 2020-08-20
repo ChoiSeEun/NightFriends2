@@ -45,10 +45,9 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
     ListView listView;
 
     private static final String ARG_PARAM1 = "locName";
-    private static final String ARG_PARAM2 = "endName";
-    private static final String ARG_PARAM3 = "code";
-    private static final String ARG_PARAM4 = "latitude";
-    private static final String ARG_PARAM5 = "longitude";
+    private static final String ARG_PARAM2 = "code";
+    private static final String ARG_PARAM3 = "latitude";
+    private static final String ARG_PARAM4 = "longitude";
 
     private String locName;
     //private String eName;
@@ -75,10 +74,9 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, locName);
-        //args.putString(ARG_PARAM2, endName);
-        args.putInt(ARG_PARAM3,code);
-        args.putDouble(ARG_PARAM4, lat);
-        args.putDouble(ARG_PARAM5, lon);
+        args.putInt(ARG_PARAM2,code);
+        args.putDouble(ARG_PARAM3, lat);
+        args.putDouble(ARG_PARAM4, lon);
         fragment2.setArguments(args);
 
 
@@ -129,14 +127,22 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         return fragment2;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            locName = getArguments().getString(ARG_PARAM1);
+            Code = getArguments().getInt(ARG_PARAM2);
+            lat = getArguments().getDouble(ARG_PARAM3);
+            lon = getArguments().getDouble(ARG_PARAM4);
+        }
+    }
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment2_guide, container, false);
         listView = (ListView) v.findViewById(R.id.road_list);
-
-        //LayoutInflater layoutInflater = (LayoutInflater)((Night_main)getActivity()).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View view = layoutInflater.inflate(R.layout.fragment1_map,null);
 
         mapView = new TMapView(getActivity());
 
@@ -145,11 +151,12 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
 
         Button bt_guide=(Button)v.findViewById(R.id.bt_call2);
-        ImageButton bt_search_s=(ImageButton)v.findViewById(R.id.bt_search_start);
-        ImageButton bt_search_e=(ImageButton)v.findViewById(R.id.bt_search_end);
+        ImageButton bt_search=(ImageButton)v.findViewById(R.id.bt_search_f2);
+        ImageButton bt_cancel=(ImageButton)v.findViewById(R.id.bt_cancel_f2);
 
         //bt_guide.setOnClickListener(this);
 
+        //길찾기 버튼 클릭시 GuideActivity로 데이터 넘기기 & 화면 이동
         bt_guide.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -170,19 +177,22 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
         });
 
+        //출발지, 도착지 텍스트 설정
         if(Code!=null) {
             startLocation.setText(startName);
             endLocation.setText(endName);
         }
 
-        bt_search_s.setOnClickListener(new View.OnClickListener() {
+        //검색 버튼 클릭시 지도 화면으로 이동
+        bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((Night_main)getActivity()).replaceFragment(Fragment1.newInstance());
             }
         });
 
-        bt_search_e.setOnClickListener(new View.OnClickListener() {
+        //X버튼 클릭시 설정된 데이터 초기화
+        bt_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startLocation.setText(null);
@@ -193,16 +203,6 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
                 point2=null;
             }
         });
-
-        //출발지/도착지 텍스트 설정
-        /*
-        if(sName!=null && eName==null){
-            startLocation.setText(sName);
-        }
-        else if(eName!=null){
-            startLocation.setText(sName);
-            endLocation.setText(eName);
-        }*/
 
         //안전지수 모델 삽입
         model = getTfliteInterpreter("converted_model.tflite");
@@ -222,8 +222,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         input[0][5] = entertainN;
 
         model.run(input, output);
-        resulttemp = Math.round(output[0][0]*100)/100.0;
-
+        resulttemp = Math.round(output[0][0]*100)/100.0;  //소수점 둘째자리까지 나타냄
 
         return v;
     }
@@ -234,18 +233,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        if(getArguments() != null){
-            locName = getArguments().getString(ARG_PARAM1);
-            //eName = getArguments().getString(ARG_PARAM2);
-            Code = getArguments().getInt(ARG_PARAM3);
-            lat = getArguments().getDouble(ARG_PARAM4);
-            lon = getArguments().getDouble(ARG_PARAM5);
-        }
-    }
-
+    //딥러닝 모델 관련
     private  Interpreter getTfliteInterpreter(String modelPath){
         try{
             return new Interpreter(loadModelFile(getActivity(), modelPath));
@@ -263,27 +251,5 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         long declaredLength = fileDescriptor.getDeclaredLength();
         return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset,declaredLength);
     }
-    /*
-    //Activity로 데이터 전달을 위한 인터페이스
-    public interface OnMyListener{
-        void onReceivedData(int lat);
-    }
 
-    private OnMyListener mOnMyListener;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof OnMyListener){
-            mOnMyListener = (OnMyListener) context;
-        } else{
-            throw new RuntimeException(context.toString()+" must implement OnMyListener");
-        }
-    }
-
-    @Override
-    public void onDetach(){
-        super.onDetach();
-        mOnMyListener=null;
-    } */
 }

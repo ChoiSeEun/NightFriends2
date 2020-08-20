@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="0.029999971" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/bt_search_gr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/nf"
@@ -51,10 +51,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06999999"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@android:drawable/ic_menu_search"/>
 
     <ImageButton
-        android:id="@+id/imageButton7"
+        android:id="@+id/bt_cancel_gr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/nf"
@@ -63,9 +63,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.981"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton6"
+        app:layout_constraintTop_toBottomOf="@+id/bt_search_gr"
         app:layout_constraintVertical_bias="0.01999998"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
 
     <ImageButton
         android:id="@+id/imageButton5"

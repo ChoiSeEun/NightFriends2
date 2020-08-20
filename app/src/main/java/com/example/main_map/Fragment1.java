@@ -149,9 +149,9 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         //지도 처음 띄웠을 때 중심 좌표
         final TMapPoint initialPoint = mapView.getCenterPoint();
 
-        onMapPoint(mapView);
+        onMapPoint(mapView); //마커 표시 테스트
 
-        //onMapCircle(mapView);
+        //onMapCircle(mapView); //원 반경 표시 테스트
 
         readData_lamp();  //가로등 csv 파일 읽기
         set_zero();
@@ -259,6 +259,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             }
         });
 
+        //GuideActivity에서 넘어온 데이터 받기 (경로안내 polyline 그리기 위함)
         Bundle bundle = getArguments();
 
         if(bundle!=null) {
@@ -289,29 +290,6 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                     });
         }
 
-
-        //api 호출 없이 tmap api에 정의된 함수를 통해 경로안내 xml 데이터 가져오기
-        /* tMapData.findPathDataAllType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, new TMapData.FindPathDataAllListenerCallback() {
-            @Override
-            public void onFindPathDataAll(Document document) {
-                Element root = document.getDocumentElement();
-                NodeList nodeListPlacemark = root.getElementsByTagName("Placemark");
-
-                for( int i=0; i<nodeListPlacemark.getLength(); i++ ) {
-                    NodeList nodeListPlacemarkItem = nodeListPlacemark.item(i).getChildNodes();
-                    for( int j=0; j<nodeListPlacemarkItem.getLength(); j++ ) {
-                        if( nodeListPlacemarkItem.item(j).getNodeName().equals("LineString") ) {
-                            //NodeList nod = nodeListPlacemarkItem.item(j).getChildNodes();
-
-                            Log.d("debug", nodeListPlacemarkItem.item(j).getNodeValue());
-                        }
-                    }
-                }
-            }
-        }); */
-
-        Log.d("Test", "Param1: "+mParam1);
-
         return v;
     }
 
@@ -336,7 +314,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         tItem.setPosition(0.5f, 1.0f);
         tItem.setTMapPoint(tpoint);
         tItem.setName("강남역");
-        mapView.addMarkerItem("강남역", tItem);
+        //mapView.addMarkerItem("강남역", tItem);
 
         mapView.setCenterPoint(127.027610,37.498095, false);
 
