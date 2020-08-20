@@ -45,6 +45,8 @@ public class GuideActivity extends AppCompatActivity {
     Double start_lon = null;
     Double end_lat = null;
     Double end_lon = null;
+    Integer time = null;
+    Double safe_score = null;
 
     String sName, eName;
 
@@ -64,8 +66,9 @@ public class GuideActivity extends AppCompatActivity {
         end_lon = intent.getExtras().getDouble("end_lon");
         sName = intent.getExtras().getString("startLocation");
         eName = intent.getExtras().getString("endLocation");
-        Integer time = intent.getExtras().getInt("time");
-        Log.e("start: ",""+start_lat+","+start_lon);
+        time = intent.getExtras().getInt("time");
+        safe_score = intent.getExtras().getDouble("safe_score");
+        Log.e("안전지수: ",""+safe_score);
 
         startLocation.setText(sName);
         endLocation.setText(eName);
@@ -78,9 +81,7 @@ public class GuideActivity extends AppCompatActivity {
         //TMapPoint point1 = new TMapPoint(start_lat, start_lon);
         //TMapPoint point2 = new TMapPoint(end_lat, end_lon);
 
-
-
-        adapter.addItem(new Matching_list(time,"***->***->***->***","80%","매칭"));
+        adapter.addItem(new Matching_list(time,"***->***->***->***",safe_score,"매칭"));
         //adapter.addItem(new Matching_list(20,"***->***->***->***","87%","매칭"));
         //adapter.addItem(new Matching_list("26분","***->***->***->***","79%","매칭"));
         //adapter.addItem(new Matching_list("30분","***->***->****->****","70%","매칭"));

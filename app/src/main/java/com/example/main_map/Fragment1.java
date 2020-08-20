@@ -6,17 +6,22 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,6 +73,10 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
     private boolean m_bTrackingMode = true;
     private static TMapView mapView = null;
     private static BitmapFactory itmapFactory;
+    private static Bitmap bitmap, bitmap2;
+    private ImageButton bt_search;
+    private Button lamp_btn, start_setting_btn, end_setting_btn;
+    private EditText et_search;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "code";
@@ -80,6 +89,10 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
     static TMapPoint startPoint = null;
     static TMapPoint endPoint = null;
 
+    static String find_Name1 = null;
+    static String find_Name2 = null;
+    static TMapPoint find_Point = null;
+
     Double start_lat=null;
     Double start_lon=null;
     Double end_lat=null;
@@ -89,94 +102,8 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
     }
 
-    public static Fragment1 newInstance(String param1, final Integer code){
+    public static Fragment1 newInstance(){
         final Fragment1 fragment1 = new Fragment1();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putInt(ARG_PARAM2, code);
-        fragment1.setArguments(args);
-
-        Log.e("New Instance","");
-        //Fragment2에서 넘어온 데이터로 POI 검색하기
-        TMapData tmapdata = new TMapData();
-        tmapdata.findAllPOI(param1, new TMapData.FindAllPOIListenerCallback() {
-            TMapPoint mp = null;
-            double x, y;
-            @Override
-            public void onFindAllPOI(ArrayList poiItem) {
-                for(int i = 0; i < poiItem.size(); i++) {
-                    TMapPOIItem item = (TMapPOIItem) poiItem.get(i);
-                    TMapMarkerItem mk = new TMapMarkerItem();
-                    x = item.getPOIPoint().getLatitude();
-                    y = item.getPOIPoint().getLongitude();
-                    mp = item.getPOIPoint();
-
-                    Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                    mk.setName(item.getPOIName());
-                    mk.setIcon(bitmap);
-                    mk.setTMapPoint(mp);
-
-                    mk.setCalloutTitle(item.getPOIName());
-                    mk.setCanShowCallout(true);
-
-                    Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_stat_name);
-                    mk.setCalloutRightButtonImage(bitmap2);
-
-                    mapView.addMarkerItem("markerItem" + i, mk);
-
-
-                    //풍선뷰 클릭시 위도/경도 받기
-                    mapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
-                        @Override
-                        public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
-                            if(!arrayList.isEmpty()){
-                                if(code==101) {
-                                    startName = arrayList.get(0).getName();
-                                    startPoint = arrayList.get(0).getTMapPoint();
-                                    Log.e("마커 이름: ",""+startName);
-                                    Log.e("마커의 위도/경도: ",""+arrayList.get(0).getTMapPoint());
-                                }
-                                else if(code==102){
-                                    endName = arrayList.get(0).getName();
-                                    endPoint = arrayList.get(0).getTMapPoint();
-                                    Log.e("마커 이름:",""+endName);
-                                    Log.e("마커의 위도/경도: ",""+arrayList.get(0).getTMapPoint());
-                                }
-
-                            }
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
-                            return false;
-                        }
-                    });
-
-                    //풍선뷰 아이콘 클릭시 출발지/도착지 설정 및 길찾기 화면으로 이동
-                    mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
-                        @Override
-                        public void onCalloutRightButton(TMapMarkerItem markerItem) {
-                            if(code==101){
-                                ((Night_main)mContext).replaceFragment(Fragment2.newInstance(startName, endName, 101, startPoint.getLatitude(), startPoint.getLongitude()));
-                            }
-                            else if(code==102) {
-                                ((Night_main) mContext).replaceFragment(Fragment2.newInstance(startName, endName,102, endPoint.getLatitude(), endPoint.getLongitude()));
-                            }
-                            Log.d("풍선뷰 Click: ", "선택 됨");
-                        }
-                    });
-
-                    Log.d("POI Name: ", item.getPOIName().toString() + ", " +
-                            "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
-                            "Point: " + item.getPOIPoint().toString());
-
-                }
-            }
-        });
-
-
         return fragment1;
     }
 
@@ -196,7 +123,15 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment1_map, container, false);
 
-        Button lamp_btn = (Button)v.findViewById(R.id.bt_lamp_onoff);
+        lamp_btn = (Button)v.findViewById(R.id.bt_lamp_onoff);
+        bt_search = (ImageButton)v.findViewById(R.id.bt_search);
+        et_search = (EditText)v.findViewById(R.id.et_search);
+        start_setting_btn = (Button)v.findViewById(R.id.bt_set_start);
+        end_setting_btn = (Button)v.findViewById(R.id.bt_set_end);
+
+        //출발지, 도착지 지정 버튼 안보이게
+        start_setting_btn.setVisibility(View.GONE);
+        end_setting_btn.setVisibility(View.GONE);
 
         mContext = getActivity();
 
@@ -220,6 +155,83 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
         readData_lamp();  //가로등 csv 파일 읽기
         set_zero();
+
+        //검색 버튼 클릭: 지도 검색 => 마커 표시 => 해당 마커 이름, 위도, 경도 얻기
+        bt_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TMapData tmapdata = new TMapData();
+                String search_name = et_search.getText().toString();
+                tmapdata.findAllPOI(search_name, new TMapData.FindAllPOIListenerCallback(){
+                    TMapPoint mp = null;
+                    @Override
+                    public void onFindAllPOI(ArrayList poiItem) {
+                        for(int i = 0; i < poiItem.size(); i++) {
+                            TMapPOIItem  item = (TMapPOIItem)poiItem.get(i);
+                            TMapMarkerItem mk = new TMapMarkerItem();
+                            mp = item.getPOIPoint();
+                            bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
+
+                            mk.setName(item.getPOIName());
+                            mk.setIcon(bitmap);
+                            mk.setTMapPoint(mp);
+
+                            mk.setCalloutTitle(item.getPOIName());
+                            mk.setCanShowCallout(true);
+
+                            mapView.addMarkerItem("markerItem" + i, mk);
+
+                            Log.d("POI Name: ", item.getPOIName().toString() + ", " +
+                                    "Address: " + item.getPOIAddress().replace("null", "")  + ", " +
+                                    "Point: " + item.getPOIPoint().toString());
+
+                            //마커 누르면 마커 이름, 위도, 경도 받아오기
+                            mapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
+                                @Override
+                                public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                                    if(!arrayList.isEmpty()){
+                                        find_Name1 = arrayList.get(0).getName();
+                                        find_Point = arrayList.get(0).getTMapPoint();
+                                        start_setting_btn.setVisibility(View.VISIBLE);
+                                        end_setting_btn.setVisibility(View.VISIBLE);
+                                        Log.e("마커 이름: ",""+find_Name1);
+                                        Log.e("마커의 위도/경도: ",""+find_Point);
+                                    }
+
+                                    else{ //마커가 눌리지 않았을 때는 출발지, 도착지 지정 버튼 사라지게
+                                        start_setting_btn.setVisibility(View.GONE);
+                                        end_setting_btn.setVisibility(View.GONE);
+                                    }
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                                    return false;
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        //출발지 지정 버튼
+        start_setting_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ((Night_main)mContext).replaceFragment(Fragment2.newInstance(find_Name1, 101, find_Point.getLatitude(), find_Point.getLongitude()));
+            }
+        });
+
+        //도착지 지정 버튼
+        end_setting_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ((Night_main)mContext).replaceFragment(Fragment2.newInstance(find_Name1, 102, find_Point.getLatitude(), find_Point.getLongitude()));
+            }
+        });
+
 
         //가로등 버튼 터치시 마커 표시
         lamp_btn.setOnClickListener(new View.OnClickListener(){

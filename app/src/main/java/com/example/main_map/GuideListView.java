@@ -45,8 +45,8 @@ public class GuideListView extends LinearLayout {
     public void setRoadText(String road){
         roadText.setText(road);
     }
-    public void setScoreText(String score){
-        scoreText.setText(score);
+    public void setScoreText(Double score){
+        scoreText.setText(""+score+"%");
     }
     public void setMatchingBtn(String text){
         matchingBtn.setText(text);

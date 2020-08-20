@@ -19,13 +19,16 @@
             android:layout_weight="3"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="장소 검색" />
+            android:hint="장소 검색"
+            android:textColorHint="@color/nf"/>
 
         <ImageButton
             android:id="@+id/bt_search"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
+            android:background="@drawable/button_setting_map"
+            android:tint = "#FFFFFF"
             app:srcCompat="@android:drawable/ic_menu_search" />
 
     </LinearLayout>
@@ -72,7 +75,39 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="55dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/baseline_local_post_office_black_18" />
+
+        <Button
+            android:id="@+id/bt_set_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="60dp"
+            android:layout_toEndOf="@+id/bt_mail_save"
+            android:layout_toRightOf="@+id/bt_mail_save"
+            android:background="@drawable/button_setting_map"
+            android:text="출발지 지정"
+            android:textColor="@color/nf2" />
+
+        <Button
+            android:id="@+id/bt_set_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="60dp"
+            android:layout_toStartOf="@+id/bt_my_position"
+            android:layout_toLeftOf="@+id/bt_my_position"
+            android:background="@drawable/button_setting_map"
+            android:text="도착지 지정"
+            android:textColor="@color/nf2" />
 
         <Button
             android:id="@+id/bt_my_position"
@@ -80,7 +115,7 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="5dp"
             android:layout_marginBottom="55dp"
             android:background="@drawable/position_bt" />
 

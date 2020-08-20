@@ -3,10 +3,10 @@ package com.example.main_map;
 public class Matching_list {
     Integer time;
     String road;
-    String score;
+    Double score;
     String text;
 
-    public Matching_list(Integer time, String road, String score, String text){
+    public Matching_list(Integer time, String road, Double score, String text){
         this.time = time;
         this.road = road;
         this.score = score;
@@ -24,10 +24,10 @@ public class Matching_list {
     public String getRoad(){
         return road;
     }
-    public void setScore(String score){
+    public void setScore(Double score){
         this.score = score;
     }
-    public String getScore(){
+    public Double getScore(){
         return score;
     }
     public void setText(String text){

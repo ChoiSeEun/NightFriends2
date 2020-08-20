@@ -23,14 +23,22 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-
+        aaptOptions{
+            noCompress "tflite"
+        }
     }
-
-
 }
 allprojects{
     repositories{
         maven {url 'https://jitpack.io'}
+    }
+}
+buildscript{
+    repositories{
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
     }
 }
 
@@ -48,5 +56,5 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.7'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.7'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
-
+    implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
 }
