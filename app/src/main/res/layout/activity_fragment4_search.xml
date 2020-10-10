@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    android:orientation="vertical"
+    tools:context="main_map.Fragment4_search">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_dest2"
+            android:layout_width="282dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="목적지를 입력하세요"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/bt_matching_search2"
+            style="@android:style/Widget.Button"
+            android:layout_width="48dp"
+            android:layout_height="32dp"
+
+            android:layout_gravity="center_vertical"
+
+            android:layout_weight="1"
+            android:background="@drawable/button_matching"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            android:text="검색"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lt_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

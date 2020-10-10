@@ -146,6 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="안전 우선"
+        android:checked="true"
         android:textColor="@color/nf"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -169,7 +170,7 @@
         app:layout_constraintVertical_bias="0.095" />
 
     <CheckBox
-        android:id="@+id/cb_criminal"
+        android:id="@+id/ch_criminal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="우범지역"
@@ -182,7 +183,7 @@
         app:layout_constraintVertical_bias="0.095" />
 
     <CheckBox
-        android:id="@+id/cb_lamp"
+        android:id="@+id/ch_lamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="가로등"
@@ -195,17 +196,18 @@
         app:layout_constraintVertical_bias="0.142" />
 
     <CheckBox
-        android:id="@+id/cb_fun"
+        android:id="@+id/ch_fun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="240dp"
         android:text="유흥업소"
         android:textColor="@color/nf"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintHorizontal_bias="0.729"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb_criminal"
-        app:layout_constraintVertical_bias="0.139" />
+        app:layout_constraintTop_toBottomOf="@+id/ch_criminal"
+        app:layout_constraintVertical_bias="0.637" />
 
     <Button
         android:id="@+id/bt_call2"

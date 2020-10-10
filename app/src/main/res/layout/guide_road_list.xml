@@ -44,16 +44,6 @@
                 android:textColor="@color/nf"
                 android:layout_marginTop="6dp">
             </TextView>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="매칭"
-                android:id="@+id/matching_button"
-                android:textSize="20dp"
-                android:background="@color/nf"
-                android:textColor="@color/nf2">
-            </Button>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

@@ -10,21 +10,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#FFFFFF"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_sosmain"
-            android:layout_width="325dp"
-            android:layout_height="match_parent"
-
+        <EditText
+            android:id="@+id/et_start"
+            android:layout_width="271dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="현재 설정된 목적지"
-            android:textColor="#000000"
-            android:textSize="24sp" />
+            android:ems="10"
+            android:hint="출발지를 입력하세요"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/bt_matching_search"
@@ -41,69 +36,48 @@
 
             android:shadowDy="0"
             android:shadowRadius="0"
-            android:text="변경"
+            android:text="매칭"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="5dp">
-
-        <TextView
-            android:id="@+id/tv_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-
-            android:text="출발시간"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/later_10"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+        <EditText
+            android:id="@+id/et_dest"
+            android:layout_width="271dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/button_matching2"
-            android:text="10분 후" />
+            android:ems="10"
+            android:hint="목적지를 입력하세요"
+            android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/later_20"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_matching2"
-            android:text="20분 후" />
+            android:id="@+id/bt_matching_cancel"
+            style="@android:style/Widget.Button"
+            android:layout_width="48dp"
+            android:layout_height="32dp"
 
-        <Button
-            android:id="@+id/later_30"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_matching2"
-            android:text="30분 후" />
+            android:layout_gravity="center_vertical"
 
-        <Button
-            android:id="@+id/later_40"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/button_matching2"
-            android:text="40분 후" />
+            android:background="@drawable/button_matching"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            android:text="취소"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -114,12 +88,13 @@
         android:layout_marginEnd="5dp">
 
         <Button
-            android:id="@+id/matching_map"
+            android:id="@+id/bt_matching_map"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:background="@drawable/button_matching"
-            android:text="지도"
-            android:textColor="#FFFFFF" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/button_setting_map"
+            android:text="매칭 지도"
+            android:textColor="@color/design_default_color_on_primary" />
 
         <LinearLayout
             android:layout_width="77dp"
@@ -128,12 +103,13 @@
             android:layout_marginRight="0dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView3"
+            <Button
+                android:id="@+id/chat_room"
                 android:layout_width="17dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/baseline_local_post_office_black_18" />
+                android:background="@drawable/baseline_local_post_office_black_18"
+                android:text="Button" />
 
             <Button
                 android:id="@+id/bt_matching_setting"
