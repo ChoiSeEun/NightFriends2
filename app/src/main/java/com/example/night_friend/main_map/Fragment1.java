@@ -2,6 +2,7 @@ package com.example.night_friend.main_map;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,11 +15,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -59,6 +62,7 @@ import com.skt.Tmap.TMapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,6 +73,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import static java.lang.Math.sqrt;
 
@@ -135,6 +141,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
     double now_lat, now_long;
 
     ArrayList<String> pointList = new ArrayList<String>();
+    ArrayList<String> extra_point = new ArrayList<>();
 
     private Location mLastlocation = null;
     public Handler GPShandler;
@@ -142,6 +149,12 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
     double gpsLatitude, gpsLongitude;
 
     private AlertDialog dialog;
+    private int dialogCnt = 0;
+    private int isOutCnt = 0;
+    private String sosPhoneNum;
+    private String sosAddress;
+    private TMapPoint lastLocation;
+
 
     public Fragment1(){
 
@@ -255,15 +268,11 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             public boolean onTouch(View v, MotionEvent event) {
                 switch(event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        //터치했을 때의 이벤트
-                        //try{
 
 
                         Intent intent = new Intent(getActivity(),Fragment4_search.class);
                         startActivity(intent);
-                        ///}catch (InflateException e){
-                        // 검색창 View가 이미 inflate되어 있는 상태이므로, 에러를 무시합니다.
-                        //}
+
 
                         break;
                     }
@@ -271,7 +280,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                 return false;
             }
         });
-/*
+
         //경로이탈 했는지 5초마다 확인하는 핸들러
         GPShandler = new Handler() {
             public void handleMessage(Message msg)
@@ -325,15 +334,40 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     dialog = builder.setMessage("경로를 이탈하였습니다.").setPositiveButton("확인",null).create();
                     dialog.show();
-                    Log.e("경로이탈 ","true");
-                }
+                    GPShandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    },3000);
+                    Log.e("경로이탈 ", "true "+isOutCnt);
 
+                    if(isOut==false){ //경로이탈이 아니면 cnt 초기화
+                        isOutCnt=0;
+                        dialogCnt=0;
+                    }
+
+                    if(isOutCnt>5 && dialogCnt==0){
+                        dialogCnt++;
+                        lastLocation = new TMapPoint(gpsLatitude, gpsLongitude);
+                        //Log.e("lastLocation: ",gpsLatitude+","+gpsLongitude);
+                        try {
+                            showMessage();
+                        } catch (ParserConfigurationException e) {
+                            e.printStackTrace();
+                        } catch (SAXException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
                 this.sendEmptyMessageDelayed(0, REPEAT_DELAY);        // REPEAT_DELAY 간격으로 계속해서 반복하게 만들어준다
 
             }
 
         };
-*/
+
         //검색 버튼 클릭: 지도 검색 => 마커 표시 => 해당 마커 이름, 위도, 경도 얻기
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -536,6 +570,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         bt_return_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GPShandler.removeMessages(0);
                 Intent intent = new Intent();
                 intent.putExtra("result_msg","결과");
                 getActivity().setResult(202,intent);
@@ -547,6 +582,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         Bundle bundle = getArguments();
 
         if(bundle!=null&&bundle.getInt("code")==103) {
+            bt_return_result.setVisibility(View.VISIBLE);
             start_lat = bundle.getDouble("start_lat");
             start_lon = bundle.getDouble("start_lon");
             end_lat = bundle.getDouble("end_lat");
@@ -576,41 +612,14 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             recording = false;
             autoRecord();
             pointList = Fragment2.pointList; //coordinates 좌표(ArrayList)
-
-
-            for(int i=0;i<pointList.size()-1;i++){
-                double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                double dist = 0;
-
-                //coordinates 배열은 "경도, 위도" 문자열 형태로 되어 double형 위도, 경도 얻기 위해서 파싱
-                String[] ele1 = pointList.get(i).split(",");
-                String[] ele2 = pointList.get(i+1).split(",");
-
-                if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
-                    y1 = Double.parseDouble(ele1[0]);
-                    x1 = Double.parseDouble(ele1[1]);
-                    //Log.e("x1,y1 ", "" + x1 + ", " + y1);
-                }
-                if(!ele2[0].isEmpty() && !ele2[1].isEmpty()) {
-                    y2 = Double.parseDouble(ele2[0]);
-                    x2 = Double.parseDouble(ele2[1]);
-                    //Log.e("x2,y2 ", "" + x2 + ", " + y2);
-                }
-
-                if(x1!=0 && x2!=0) {
-                    //두 지점 사이 거리 구해서 40m 이상이면 중간 지점 좌표 별도 배열에 추가
-                    distance(x1, y1, x2, y2);
-                    Log.e("두 지점사이 거리: ", "" + dist+"m");
-                }
-
-
-            }
+            extra_point = Fragment2.extra_point1;
 
             GPShandler.sendEmptyMessage(0);
         }
 
         //passList_mid를 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1031) {
+            bt_return_result.setVisibility(View.VISIBLE);
             start_lat = bundle.getDouble("start_lat");
             start_lon = bundle.getDouble("start_lon");
             end_lat = bundle.getDouble("end_lat");
@@ -644,34 +653,8 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             autoRecord();
 
             pointList = Fragment2.pointList_mid;
+            extra_point = Fragment2.extra_point4;
 
-            for(int i=0;i<pointList.size()-1;i++){
-                double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                double dist = 0;
-
-                //coordinates 배열은 "경도, 위도" 문자열 형태로 되어 double형 위도, 경도 얻기 위해서 파싱
-                String[] ele1 = pointList.get(i).split(",");
-                String[] ele2 = pointList.get(i+1).split(",");
-
-                if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
-                    y1 = Double.parseDouble(ele1[0]);
-                    x1 = Double.parseDouble(ele1[1]);
-                    //Log.e("x1,y1 ", "" + x1 + ", " + y1);
-                }
-                if(!ele2[0].isEmpty() && !ele2[1].isEmpty()) {
-                    y2 = Double.parseDouble(ele2[0]);
-                    x2 = Double.parseDouble(ele2[1]);
-                    //Log.e("x2,y2 ", "" + x2 + ", " + y2);
-                }
-
-                if(x1!=0 && x2!=0) {
-                    //두 지점 사이 거리 구해서 40m 이상이면 중간 지점 좌표 별도 배열에 추가
-                    distance(x1, y1, x2, y2);
-                    //Log.e("두 지점사이 거리: ", "" + dist+"m");
-                }
-
-
-            }
 
             GPShandler.sendEmptyMessage(0);
 
@@ -680,6 +663,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
         //passList2를 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1032) {
+            bt_return_result.setVisibility(View.VISIBLE);
             start_lat = bundle.getDouble("start_lat");
             start_lon = bundle.getDouble("start_lon");
             end_lat = bundle.getDouble("end_lat");
@@ -711,34 +695,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             autoRecord();
 
             pointList = Fragment2.pointList2;
-
-            for(int i=0;i<pointList.size()-1;i++){
-                double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                double dist = 0;
-
-                //coordinates 배열은 "경도, 위도" 문자열 형태로 되어 double형 위도, 경도 얻기 위해서 파싱
-                String[] ele1 = pointList.get(i).split(",");
-                String[] ele2 = pointList.get(i+1).split(",");
-
-                if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
-                    y1 = Double.parseDouble(ele1[0]);
-                    x1 = Double.parseDouble(ele1[1]);
-                    //Log.e("x1,y1 ", "" + x1 + ", " + y1);
-                }
-                if(!ele2[0].isEmpty() && !ele2[1].isEmpty()) {
-                    y2 = Double.parseDouble(ele2[0]);
-                    x2 = Double.parseDouble(ele2[1]);
-                    //Log.e("x2,y2 ", "" + x2 + ", " + y2);
-                }
-
-                if(x1!=0 && x2!=0) {
-                    //두 지점 사이 거리 구해서 40m 이상이면 중간 지점 좌표 별도 배열에 추가
-                    distance(x1, y1, x2, y2);
-                    //Log.e("두 지점사이 거리: ", "" + dist+"m");
-                }
-
-
-            }
+            extra_point = Fragment2.extra_point2;
 
             GPShandler.sendEmptyMessage(0);
 
@@ -746,6 +703,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
         //passList3을 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1033) {
+            bt_return_result.setVisibility(View.VISIBLE);
             start_lat = bundle.getDouble("start_lat");
             start_lon = bundle.getDouble("start_lon");
             end_lat = bundle.getDouble("end_lat");
@@ -777,34 +735,8 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             autoRecord();
 
             pointList = Fragment2.pointList3;
+            extra_point = Fragment2.extra_point3;
 
-            for(int i=0;i<pointList.size()-1;i++){
-                double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-                double dist = 0;
-
-                //coordinates 배열은 "경도, 위도" 문자열 형태로 되어 double형 위도, 경도 얻기 위해서 파싱
-                String[] ele1 = pointList.get(i).split(",");
-                String[] ele2 = pointList.get(i+1).split(",");
-
-                if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
-                    y1 = Double.parseDouble(ele1[0]);
-                    x1 = Double.parseDouble(ele1[1]);
-                    //Log.e("x1,y1 ", "" + x1 + ", " + y1);
-                }
-                if(!ele2[0].isEmpty() && !ele2[1].isEmpty()) {
-                    y2 = Double.parseDouble(ele2[0]);
-                    x2 = Double.parseDouble(ele2[1]);
-                    //Log.e("x2,y2 ", "" + x2 + ", " + y2);
-                }
-
-                if(x1!=0 && x2!=0) {
-                    //두 지점 사이 거리 구해서 40m 이상이면 중간 지점 좌표 별도 배열에 추가
-                    distance(x1, y1, x2, y2);
-                    //Log.e("두 지점사이 거리: ", "" + dist+"m");
-                }
-
-
-            }
 
             GPShandler.sendEmptyMessage(0);
 
@@ -820,223 +752,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         }
 
 
-        //pointList와 extra_list 마커로 확인
-        bt_mail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int count = 0;
-                for (String i : pointList) {
-                    if(!i.isEmpty()) {
-
-                        TMapMarkerItem mk = new TMapMarkerItem();
-                        String[] xy = i.split(",");
-
-                        double y = Double.parseDouble(xy[0]);
-                        double x = Double.parseDouble(xy[1]);
-
-                        TMapPoint mp = new TMapPoint(x,y);
-                        Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                        mk.setName("coordinates");
-                        mk.setIcon(bitmap);
-                        mk.setTMapPoint(mp);
-
-                        mapView.addMarkerItem("coordinates_Marker" + i, mk);
-                    }
-                }
-
-                for (String i : extra_point) {
-                    if(!i.isEmpty()) {
-
-                        TMapMarkerItem mk = new TMapMarkerItem();
-                        String[] xy = i.split(",");
-
-                        double x = Double.parseDouble(xy[0]);
-                        double y = Double.parseDouble(xy[1]);
-
-                        TMapPoint mp = new TMapPoint(x,y);
-                        Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                        mk.setName("coordinates");
-                        mk.setIcon(bitmap);
-                        mk.setTMapPoint(mp);
-
-                        mapView.addMarkerItem("coordinates_Marker" + i, mk);
-                    }
-                }
-
-
-            }
-
-        });
-        /* -------------시설물 갯수 세기 위한 테스트----------------------
-        TMapData tMapData = new TMapData();
-        TMapPoint point1 = new TMapPoint(37.570342, 126.976510);
-        TMapPoint point2 = new TMapPoint(37.573950, 126.973443);
-        ArrayList passList = null;
-        final ArrayList<String> pointList = new ArrayList<String>(); */
-
-        //테스트 경로 그리기
-        /*tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 00,
-                new TMapData.FindPathDataListenerCallback() {
-                    @Override
-                    public void onFindPathData(TMapPolyLine polyLine) {
-                        Log.e("폴리라인 그리기","");
-                        mapView.addTMapPath(polyLine);
-
-                    }
-                });
-
-
-
-        //coordinates 좌표들 리스트(pointList)에 넣기
-        tMapData.findPathDataAllType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, new TMapData.FindPathDataAllListenerCallback() {
-
-            @Override
-            public void onFindPathDataAll(Document document) {
-                Element root = document.getDocumentElement();
-                NodeList nodeListPlacemark = root.getElementsByTagName("Placemark");
-
-                Log.e("total Distance: ",""+root.getElementsByTagName("tmap:totalDistance").item(0).getTextContent().trim());
-                for( int i=0; i<nodeListPlacemark.getLength(); i++ ) {
-                    NodeList nodeListPlacemarkItem = nodeListPlacemark.item(i).getChildNodes();
-                    for( int j=0; j<nodeListPlacemarkItem.getLength(); j++ ) {
-                        if( nodeListPlacemarkItem.item(j).getNodeName().equals("description") ) {
-                            Log.d("Description", nodeListPlacemarkItem.item(j).getTextContent().trim() );
-                        }
-                        if( nodeListPlacemarkItem.item(j).getNodeName().equals("LineString") || nodeListPlacemarkItem.item(j).getNodeName().equals("Point")) {
-                            //Log.d("LineString", nodeListPlacemarkItem.item(j).getTextContent().trim());
-                            String s = nodeListPlacemarkItem.item(j).getTextContent().trim();
-                            String[] newS = s.split("\\s");
-                            for(String element : newS) {
-                                pointList.add(element);
-                                Log.d("LineString", element);
-                            }
-
-
-                            //TMapPOIItem item = (TMapPOIItem)poiItem.get(i);
-                            //TMapMarkerItem mk = new TMapMarkerItem();
-
-                            //bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                            //mk.setName(item.getPOIName());
-                            //mk.setIcon(bitmap);
-                            //mk.setTMapPoint(mp);
-
-                        }
-                        if( nodeListPlacemarkItem.item(j).getNodeName().equals("Point") ) {
-                            Log.d("Point", nodeListPlacemarkItem.item(j).getTextContent().trim() );
-                        }
-                    }
-                }
-            }
-
-        }); */
-
-
-        /*메일버튼 클릭시 길찾기 경로에 있는 coordinates 마커 표시 --- 가로등 갯수 세기 테스트용
-        bt_mail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int count = 0;
-                for (String i : pointList) {
-                    if(!i.isEmpty()) {
-                        //Log.e("pointList: ", "" + i + "//");
-                        TMapMarkerItem mk = new TMapMarkerItem();
-                        String[] xy = i.split(",");
-
-                        double y = Double.parseDouble(xy[0]);
-                        double x = Double.parseDouble(xy[1]);
-                        //Log.e("x: ",""+x+"y:"+y);
-                        TMapPoint mp = new TMapPoint(x,y);
-                        Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                        mk.setName("coordinates");
-                        mk.setIcon(bitmap);
-                        mk.setTMapPoint(mp);
-
-                        mapView.addMarkerItem("coordinates_Marker" + i, mk);
-                    }
-                }
-                Log.e("-----count----",""+count);
-            }
-
-        });
-
-        //현재위치 버튼 클릭시 길찾기 경로와 겹치는 가로등 마커 표시 --- 가로등 갯수 세기 테스트용
-        bt_pos.setOnClickListener(new View.OnClickListener() {
-            int count = 0;
-            @Override
-            public void onClick(View v) {
-                TMapPoint mp = null;
-                double x, y;
-                for (int i = 0; i < cctvlist.size(); i++) {
-                    if(cctvlist.get(i).getXpos()!=0 && cctvlist.get(i).getYpos()!=0) {
-
-                        TMapMarkerItem mk = new TMapMarkerItem();
-                        x = cctvlist.get(i).getYpos();
-                        y = cctvlist.get(i).getXpos();
-                        mp = new TMapPoint(x, y);
-                        Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
-
-                        //Log.d("Location", "Latitude: " + x + ", Longitude: " + y);
-                        mk.setName("CCTV");
-                        mk.setIcon(bitmap);
-                        mk.setTMapPoint(mp);
-
-                        for (String ii : pointList) {
-                            if(!ii.isEmpty()) {
-                                String[] xy = ii.split(",");
-
-                                double xx = Double.parseDouble(xy[1]);
-                                double yy = Double.parseDouble(xy[0]);
-
-                                //Log.e("xx = ",""+xx+" x: "+x);
-                                if(x-xx<=0.00018 && x-xx>=-0.00018 && y-yy<=0.00018 && y-yy>=-0.00018){
-                                    count++;
-                                    mapView.addMarkerItem("cctv_Marker" + i, mk);
-                                    Log.e("xpos: ",""+x+" ypos: "+y+" / count: "+count);
-                                }
-                            }
-                        }
-
-                    }
-                }
-                Log.e("count: ",""+count);
-            }
-        }); */
-
         return v;
-    }
-
-    //두 지점이 30m 이상 떨어져 있으면 중간 지점 좌표를 담는 배열
-    ArrayList<String> extra_point = new ArrayList<>();
-
-    //위도, 경도로 두 지점 사이 거리 구하여 30m 이상이면 중간 지점 좌표 구해서 별도 배열에 추가
-    public void distance(double lat1, double lon1, double lat2, double lon2) {
-
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515 * 1609.344;
-
-        //30m 미만이면 함수 빠져나옴
-        if(dist<30){
-            return;
-        }
-
-        //30m 이상이면 중간 지점 좌표 구해서 배열에 추가
-        double mid_lat = midPoint(lat1,lon1,lat2,lon2).getLatitude();
-        double mid_lon = midPoint(lat1,lon1,lat2,lon2).getLongitude();
-        String mid_point_str = ""+mid_lat+","+mid_lon;
-        extra_point.add(mid_point_str);
-        //Log.d("extra_point","추가 됨");
-
-        //30m 미만이 될 때 까지 재귀호출하여 중간 지점 좌표 추가
-        distance(lat1,lon1,mid_lat,mid_lon);
-        distance(lat2,lon2,mid_lat,mid_lon);
     }
 
     //두 지점 사이의 거리만 구해서 반환
@@ -1059,28 +775,6 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
     public static double rad2deg(double rad) {
         return (rad * 180 / Math.PI);
-    }
-
-    //두 지점의 중간 지점 좌표 구하기
-    public TMapPoint midPoint(double lat1,double lon1,double lat2,double lon2){
-
-        double dLon = Math.toRadians(lon2 - lon1);
-
-        //convert to radians
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-        lon1 = Math.toRadians(lon1);
-
-        double Bx = Math.cos(lat2) * Math.cos(dLon);
-        double By = Math.cos(lat2) * Math.sin(dLon);
-        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By));
-        double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
-
-        ////TMapPoint 형태로 위도, 경도 한꺼번에 반환할 수 있도록 함
-        TMapPoint midpoint = new TMapPoint(Math.toDegrees(lat3), Math.toDegrees(lon3));
-
-        //Log.d("midPoint: ",Math.toDegrees(lat3) + " " + Math.toDegrees(lon3));
-        return midpoint;
     }
 
     public void set_zero() {
@@ -1428,50 +1122,47 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         now_long = location.getLongitude();
     }
 
-    //마커 표시 테스트
-    public void onMapPoint(TMapView mapView){
+    private void showMessage() throws ParserConfigurationException, SAXException, IOException {
 
-        //TMapPoint tpoint = new TMapPoint(37.498095, 127.027610);
-        TMapPoint tpoint = new TMapPoint(37.569882, 126.977317);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("알림");
+        builder.setMessage("경로를 이탈하여 보호자에게 현재위치를 전송하고 경찰에 신고합니다.\n신고를 원하지 않으면 취소를 누르세요.");
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
 
-        TMapMarkerItem tItem = new TMapMarkerItem();
+        builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                GPShandler.removeCallbacksAndMessages(null);
+                //CDT.cancel();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
-        Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
+        TMapData tmapdata = new TMapData();
+        tmapdata.convertGpsToAddress(lastLocation.getLatitude(), lastLocation.getLongitude(),
+                new TMapData.ConvertGPSToAddressListenerCallback() {
+                    @Override
+                    public void onConvertToGPSToAddress(String strAddress) {
+                        sosAddress = strAddress;
+                        Log.e("선택한 위치의 주소는 ", strAddress);
+                    }
+                });
 
-        tItem.setIcon(bitmap);
-        tItem.setPosition(0.5f, 1.0f);
-        tItem.setTMapPoint(tpoint);
-        tItem.setName("강남역");
-        //mapView.addMarkerItem("강남역", tItem);
 
-        //mapView.setCenterPoint(127.027610,37.498095, false);
-        mapView.setCenterPoint(126.977317,37.569882, false);
+        GPShandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage("5556", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
+                sosPhoneNum = SOS_setting.phone1.getText().toString();
+                Log.e("sosPhoneNum: ", sosPhoneNum);
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:112"));
+                startActivity(intent);
+            }
+        },5000);
 
-    }
-
-    //원 반경 표시하는
-    public void onMapCircle(TMapView mapView){
-        TMapPoint tMapPoint = new TMapPoint(37.498094, 127.027610);
-
-        TMapCircle tMapCircle = new TMapCircle();
-        tMapCircle.setCenterPoint(tMapPoint);
-        tMapCircle.setRadius(500);
-        tMapCircle.setCircleWidth(2);
-        tMapCircle.setLineColor(Color.BLUE);
-        tMapCircle.setLineColor(Color.GRAY);
-        tMapCircle.setAreaAlpha(100);
-        mapView.addTMapCircle("circle1", tMapCircle);
-
-        TMapPoint tMapPoint2 = new TMapPoint(37.551094, 127.019470);
-
-        TMapCircle tMapCircle2 = new TMapCircle();
-        tMapCircle2.setCenterPoint(tMapPoint2);
-        tMapCircle2.setRadius(500);
-        tMapCircle2.setCircleWidth(2);
-        tMapCircle2.setLineColor(Color.RED);
-        tMapCircle2.setAreaColor(Color.GRAY);
-        tMapCircle2.setAreaAlpha(100);
-        mapView.addTMapCircle("circle2", tMapCircle);
 
     }
 }
