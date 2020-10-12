@@ -20,7 +20,8 @@ import com.example.night_friend.R;
 public class SOS_setting extends AppCompatActivity {
     CheckBox cb_sos,cb_112,cb_all;
     EditText name1, name2, name3, name4;
-    EditText phone1, phone2, phone3, phone4;
+    public static EditText phone1;
+    EditText phone2, phone3, phone4;
     public static Context context_setting;
     public String ph1,ph2,ph3,ph4;
     private TextView tell1;
