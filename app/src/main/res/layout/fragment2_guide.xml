@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/bt_cancel_f2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/nf"
+        android:tint="@color/nf2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_search_f2"
+        app:layout_constraintVertical_bias="0.022"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <EditText
+
+        android:id="@+id/et_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="13"
+        android:hint="출발지를 입력하세요"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <EditText
+        android:id="@+id/et_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="13"
+        android:hint="도착지를 입력하세요"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_start"
+        app:layout_constraintVertical_bias="0.021" />
+
+    <ImageButton
+        android:id="@+id/bt_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:tint="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/et_start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
+
+    <ImageButton
+        android:id="@+id/bt_search_f2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/nf"
+        android:tint="@color/nf2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.062"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_centerInParent="true"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.222"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Switch
+        android:id="@+id/sw_matching"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="매칭  "
+        android:textColor="@color/nf"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.858"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.298" />
+
+    <TextView
+        android:id="@+id/tv_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경로 안내 옵션 설정"
+        android:textColor="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.312" />
+
+    <ImageButton
+        android:id="@+id/bt_sos_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/baseline_settings_black_18"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/tv_setting"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.302" />
+
+    <CheckBox
+        android:id="@+id/cb_faster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경로 우선"
+        android:textColor="@color/nf"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.189"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46" />
+
+    <CheckBox
+        android:id="@+id/cb_safe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안전 우선"
+        android:checked="true"
+        android:textColor="@color/nf"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.742"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46" />
+
+    <CheckBox
+        android:id="@+id/ch_cctv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CCTV"
+        android:textColor="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.212"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_faster"
+        app:layout_constraintVertical_bias="0.095" />
+
+    <CheckBox
+        android:id="@+id/ch_criminal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="우범지역"
+        android:textColor="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cb_safe"
+        app:layout_constraintVertical_bias="0.095" />
+
+    <CheckBox
+        android:id="@+id/ch_lamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가로등"
+        android:textColor="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ch_cctv"
+        app:layout_constraintVertical_bias="0.142" />
+
+    <CheckBox
+        android:id="@+id/ch_fun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="유흥업소"
+        android:textColor="@color/nf"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ch_criminal"
+        app:layout_constraintVertical_bias="0.139" />
+
+    <Button
+        android:id="@+id/bt_call2"
+        android:layout_width="72dp"
+        android:layout_height="40dp"
+        android:background="@color/nf"
+        android:onClick="onClickNextView"
+        android:text="길 찾기 "
+        android:textColor="@color/nf2"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.82" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

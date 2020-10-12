@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "230881807754",
+    "firebase_url": "https://helical-castle-280102.firebaseio.com",
+    "project_id": "helical-castle-280102",
+    "storage_bucket": "helical-castle-280102.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230881807754:android:73f59c865dc51f9ac60c73",
+        "android_client_info": {
+          "package_name": "com.example.firebase_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230881807754-ff57qf795oh91c07bbhohemm2g53eq5t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_test",
+            "certificate_hash": "0c2e81b8973ee11fcfd5e4df713e499a8e4f85bf"
+          }
+        },
+        {
+          "client_id": "230881807754-kkl2auk04d18ks5p4lgqbvhqo6noh1m8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbOcik3v7NeRjhmgb83ZVKm4uTUzyMO70"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230881807754-kkl2auk04d18ks5p4lgqbvhqo6noh1m8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
