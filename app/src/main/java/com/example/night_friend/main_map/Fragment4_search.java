@@ -36,6 +36,8 @@ public class Fragment4_search extends AppCompatActivity {
     Button bt_matching_search2;
     EditText et_dest2, et_dest;
     Handler mHandler;
+    
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +47,14 @@ public class Fragment4_search extends AppCompatActivity {
         bt_matching_search2 = findViewById(R.id.bt_matching_search2);
         et_dest2 = findViewById(R.id.et_dest2);
         et_dest = findViewById(R.id.et_dest);
+        
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE); 
+
 
         // 검색 시 리스트 뷰에 반영
         bt_matching_search2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 mHandler = new Handler();
                 Thread t = new Thread(new Runnable(){
@@ -62,6 +65,7 @@ public class Fragment4_search extends AppCompatActivity {
                             @Override
                             public void run() {
                                 // UI 작업 수행 O
+                                imm.hideSoftInputFromWindow(et_dest2.getWindowToken(),0);
                                 setAdapter();
                                 destList = CreateList();
                                 mAdapter.notifyDataSetChanged();
@@ -132,7 +136,12 @@ public class Fragment4_search extends AppCompatActivity {
 
                 }
 
-
+                Intent intent = new Intent(Fragment4_search.this, Night_main.class);
+                intent.putExtra("destLat",destLat);
+                intent.putExtra("destLon",destLon);
+                intent.putExtra("destPlace",destPlace);
+                intent.putExtra("code",104);
+                startActivity(intent);
 
                 /*
                 Bundle bundle = new Bundle();
@@ -157,6 +166,13 @@ public class Fragment4_search extends AppCompatActivity {
 
 
     }
+    
+    //검색 결과 리스트에 바로 반영되게 하기 위함
+    Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+            mAdapter.notifyDataSetChanged();
+        }
+    };
 
     // destList 검색 리스트 생성
     public ArrayList<Locationitem> CreateList(){
@@ -186,6 +202,9 @@ public class Fragment4_search extends AppCompatActivity {
 
 
                 }
+                
+                Message msg = handler.obtainMessage();
+                handler.sendMessage(msg);
             }
 
         });
