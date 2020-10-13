@@ -104,14 +104,18 @@ public class Fragment4_search extends AppCompatActivity {
                 //Intent intent = new Intent(this, ct);
                 Locationitem item = destList.get(position);
                 //et_dest.setText(item.getPlace_name());
+                
+                String destPlace = item.getPlace_name();
+                double destLat = item.getX();
+                double destLon = item.getY();
 
 
                 // 도착지 가져오기
                 if(code==103){
                     et_dest2.setHint("목적지를 입력하세요");
-                    String destPlace = item.getPlace_name();
-                    double destLat = item.getX();
-                    double destLon = item.getY();
+                    //String destPlace = item.getPlace_name();
+                    //double destLat = item.getX();
+                    //double destLon = item.getY();
                     Fragment4.newInstance(destPlace, 103, destLat, destLon);
 
                 }
