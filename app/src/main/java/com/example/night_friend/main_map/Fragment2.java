@@ -100,6 +100,12 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
     static final ArrayList<String> pointList_mid = new ArrayList<>();
     static final ArrayList<String> pointList2 = new ArrayList<>();
     static final ArrayList<String> pointList3 = new ArrayList<>();
+    
+    static ArrayList<String> extra_point1 = new ArrayList<>();
+    static ArrayList<String> extra_point2 = new ArrayList<>();
+    static ArrayList<String> extra_point3 = new ArrayList<>();
+    static ArrayList<String> extra_point4 = new ArrayList<>();
+
 
     static List passList_mid = null;
     static List passList2 = null;
@@ -223,6 +229,13 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
                 if(cctvEmphasize.isChecked()||lampEmphasize.isChecked()||
                         crimEmphasize.isChecked()||entertainEmphasize.isChecked())
                     Toast.makeText(getActivity(),"선택하신 옵션을 우선적으로 안전지수가 계산됩니다.",Toast.LENGTH_LONG).show();
+                
+                add_extra_point(pointList,pointList_set, extra_point1);
+                add_extra_point(pointList2,pointList2_set, extra_point2);
+                add_extra_point(pointList3,pointList3_set, extra_point3);
+                add_extra_point(pointList_mid, pointList_mid_set, extra_point4);
+
+                
                 double resultScore = getCount(pointList_set);
                 double resultScore_mid = getCount(pointList_mid_set);
                 double resultScore2 = getCount(pointList2_set);
@@ -284,6 +297,22 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
                 point2=null;
             }
         });
+        
+        // 전환 버튼 클릭 시 출발지와 도착지 변경
+        bt_refresh.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(point1!=null&&point2!=null){
+                    String temp=startName;
+                    startName = endName;
+                    endName=temp;
+                    startLocation.setText(startName);
+                    endLocation.setText(endName);
+                    Log.e("출발 위치 재 설정: ",startName);
+                    Log.e("도착 위치 재 설정: ",endName);
+                }
+            }
+        });
 
         if(bundle!=null&&bundle.getInt("code3")==105) {
             bt_guide.performClick();
@@ -325,75 +354,74 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         final HashSet<Double> lamp_cnt_list = new HashSet<>();
         final HashSet<Double> cctv_cnt_list = new HashSet<>();
 
-        //가로등
         double lamp_x = 0.0, lamp_y = 0.0;
         lamp = 0;
         lamp_cnt_list.clear();
-        for (int i = 0; i < Fragment1.lampList.size(); i++) {
+
+        for (String ii : hashList) {
             boolean isCount = false;
+            double x = 0.0, y = 0.0;
 
-            lamp_x = Fragment1.lampList.get(i).getLatitude();
-            lamp_y = Fragment1.lampList.get(i).getLongitude();
+            if (!ii.isEmpty()) {
+                String[] xy = ii.split(",");  // ,기준으로 문자열 자르기
 
-            double x = 0.0;
-            double y = 0.0;
-            int k = 0;
-            for (String ii : hashList) {
-                //Log.e("pointList","("+k+"): "+ii+"---------------------");
-                if (!ii.isEmpty()) {
-                    String[] xy = ii.split(",");  // ,기준으로 문자열 자르기
+                y = Double.parseDouble(xy[0]);
+                x = Double.parseDouble(xy[1]);
 
-                    y = Double.parseDouble(xy[0]);
-                    x = Double.parseDouble(xy[1]);
+                for (int i = 0; i < Fragment1.lampList.size(); i++) {
 
-                    if (x - lamp_x <= 0.00014 && x - lamp_x >= -0.00014 && y - lamp_y <= 0.00014 && y - lamp_y >= -0.00014) {
+                    lamp_x = Fragment1.lampList.get(i).getLatitude();
+                    lamp_y = Fragment1.lampList.get(i).getLongitude();
+
+                    int k = 0;
+
+                    if (x - lamp_x <= 0.0001 && x - lamp_x >= -0.0001 && y - lamp_y <= 0.0001 && y - lamp_y >= -0.0001) {
                         isCount = true;
+                        break;
                         //lamp++;
                     }
                 }
             }
+
             if (isCount == true) {
-                //lamp++;
                 lamp_cnt_list.add(lamp_x);
-                //Log.e("lamp: ","xpos: "+lamp_x+" ypos: "+lamp_y+"  lampcount: "+lamp_cnt_list.size());
+                Log.e("lamp: ","xpos: "+lamp_x+" ypos: "+lamp_y+"  lampcount: "+lamp_cnt_list.size());
             }
         }
-        Log.e("lamp count: ", "" + lamp_cnt_list.size());
 
         //CCTV
         cctv = 0;
-        double cctv_x, cctv_y;
+        double cctv_x=0.0, cctv_y;
         cctv_cnt_list.clear();
-        for (int i = 0; i < Fragment1.cctvlist.size(); i++) {
+
+        for (String ii : hashList) {
             boolean isCount = false;
+            double x = 0.0, y = 0.0;
 
-            cctv_x = Fragment1.cctvlist.get(i).getXpos();
-            cctv_y = Fragment1.cctvlist.get(i).getYpos();
+            if (!ii.isEmpty()) {
+                String[] xy = ii.split(",");  // ,기준으로 문자열 자르기
 
-            double x = 0.0;
-            double y = 0.0;
+                y = Double.parseDouble(xy[0]);
+                x = Double.parseDouble(xy[1]);
 
-            for (String ii : hashList) { //경로상의 좌표 리스트와 비교
-                if (!ii.isEmpty()) {
-                    String[] xy = ii.split(",");  // ,기준으로 문자열 자르기
+                for (int i = 0; i < Fragment1.cctvlist.size(); i++) {
 
-                    y = Double.parseDouble(xy[0]);
-                    x = Double.parseDouble(xy[1]);
+                    cctv_x = Fragment1.cctvlist.get(i).getXpos();
+                    cctv_y = Fragment1.cctvlist.get(i).getYpos();
 
-                    if (x - cctv_x <= 0.00015 && x - cctv_x >= -0.00015 && y - cctv_y <= 0.00015 && y - cctv_y >= -0.00015) {
+                    int k = 0;
+
+                    if (x - cctv_x <= 0.0001 && x - cctv_x >= -0.0001 && y - cctv_y <= 0.0001 && y - cctv_y >= -0.0001) {
                         isCount = true;
-                        //cctv++;
+                        break;
                     }
-
                 }
             }
+
             if (isCount == true) {
-                //cctv++;
                 cctv_cnt_list.add(cctv_x);
-                //Log.e("cctv: ","xpos: " + cctv_x + " ypos: " + cctv_y + "  count: " + cctv_cnt_list.size());
             }
         }
-        Log.e("cctv count: ", "" + cctv_cnt_list.size());
 
         //유흥업소와의 좌표 비교
         int entertainCount = 0;
@@ -921,6 +949,98 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
     public void onClick(View v){
         Intent intent = new Intent(getActivity(),GuideActivity.class);
         startActivity(intent);
+    }
+    
+    public static void add_extra_point(ArrayList<String> pointList, HashSet<String> hashSet, ArrayList<String> extra_list){
+        for(int i=0;i<pointList.size()-1;i++){
+            double x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+            //double dist = 0;
+
+            //coordinates 배열은 "경도, 위도" 문자열 형태로 되어 double형 위도, 경도 얻기 위해서 파싱
+            String[] ele1 = pointList.get(i).split(",");
+            String[] ele2 = pointList.get(i+1).split(",");
+
+            if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
+                y1 = Double.parseDouble(ele1[0]);
+                x1 = Double.parseDouble(ele1[1]);
+                //Log.e("x1,y1 ", "" + x1 + ", " + y1);
+            }
+            if(!ele2[0].isEmpty() && !ele2[1].isEmpty()) {
+                y2 = Double.parseDouble(ele2[0]);
+                x2 = Double.parseDouble(ele2[1]);
+                //Log.e("x2,y2 ", "" + x2 + ", " + y2);
+            }
+
+            if(x1!=0 && x2!=0) {
+                //두 지점 사이 거리 구해서 40m 이상이면 중간 지점 좌표 별도 배열에 추가
+                distance(hashSet, extra_list, x1, y1, x2, y2);
+                //Log.e("두 지점사이 거리: ", "" + dist+"m");
+            }
+
+
+        }
+    }
+
+    public static void distance(HashSet<String> hashSet, ArrayList<String> extra_list, double lat1, double lon1, double lat2, double lon2) {
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515 * 1609.344;
+
+
+        if(dist>30) {
+            //30m 이상이면 중간 지점 좌표 구해서 배열에 추가
+
+            double mid_lat = (double) midPoint_array(lat1, lon1, lat2, lon2).get(0);
+            double mid_lon = (double) midPoint_array(lat1, lon1, lat2, lon2).get(1);
+            String mid_point_str = "" + mid_lon + "," + mid_lat;
+
+            hashSet.add(mid_point_str);
+            extra_list.add(mid_point_str);
+            Log.d("extra_point",mid_point_str+" dist: "+dist);
+
+            //30m 미만이 될 때 까지 재귀호출하여 중간 지점 좌표 추가
+            distance(hashSet,extra_list, lat1,lon1,mid_lat,mid_lon);
+            distance(hashSet,extra_list, lat2,lon2,mid_lat,mid_lon);
+        }
+
+    }
+
+    public static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+
+    public static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
+    }
+
+
+    public static ArrayList midPoint_array(double lat1, double lon1, double lat2, double lon2){
+
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        //convert to radians
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+        lon1 = Math.toRadians(lon1);
+
+        double Bx = Math.cos(lat2) * Math.cos(dLon);
+        double By = Math.cos(lat2) * Math.sin(dLon);
+        double lat3 = Math.atan2(Math.sin(lat1) + Math.sin(lat2), sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By));
+        double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
+
+        //TMapPoint 형태로 위도, 경도 한꺼번에 반환할 수 있도록 함
+        ArrayList<Double> midpoint = new ArrayList<Double>();
+        midpoint.add(Math.toDegrees(lat3));
+        midpoint.add(Math.toDegrees(lon3));
+
+        //Log.d("midPoint: ",midpoint.get(0) + " " + midpoint.get(1));
+
+        return midpoint;
     }
 
     //딥러닝 모델 관련
