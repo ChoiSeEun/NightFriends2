@@ -48,6 +48,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import static java.lang.StrictMath.sqrt;
 
 import kr.hyosang.coordinate.*;
 
@@ -187,6 +188,8 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         crimEmphasize = (CheckBox) v.findViewById(R.id.ch_criminal);
         entertainEmphasize = (CheckBox)v.findViewById(R.id.ch_fun);
         bt_guide=(Button)v.findViewById(R.id.bt_call2);
+        
+        ImageButton bt_refresh =(ImageButton)v.findViewById(R.id.bt_refresh);
         ImageButton bt_search=(ImageButton)v.findViewById(R.id.bt_search_f2);
         ImageButton bt_cancel=(ImageButton)v.findViewById(R.id.bt_cancel_f2);
         Bundle bundle = getArguments();
