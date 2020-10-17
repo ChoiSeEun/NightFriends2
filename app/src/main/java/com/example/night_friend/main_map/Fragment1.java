@@ -581,7 +581,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         });
 
         //GuideActivity에서 넘어온 데이터 받기 (경로안내 polyline 그리기 위함)
-        Bundle bundle = getArguments();
+        bundle = getArguments();
 
         if(bundle!=null&&bundle.getInt("code")==103) {
             bt_return_result.setVisibility(View.VISIBLE);
