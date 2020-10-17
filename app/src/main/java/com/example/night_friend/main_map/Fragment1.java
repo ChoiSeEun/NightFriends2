@@ -154,6 +154,8 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
     private String sosPhoneNum;
     private String sosAddress;
     private TMapPoint lastLocation;
+    
+    Bundle bundle;
 
 
     public Fragment1(){
@@ -583,20 +585,14 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
         if(bundle!=null&&bundle.getInt("code")==103) {
             bt_return_result.setVisibility(View.VISIBLE);
-            start_lat = bundle.getDouble("start_lat");
-            start_lon = bundle.getDouble("start_lon");
-            end_lat = bundle.getDouble("end_lat");
-            end_lon = bundle.getDouble("end_lon");
+            setPoint();
 
             //넘어온 데이터로 polyline 그리기
             TMapData tMapData = new TMapData();
             final TMapPoint point1 = new TMapPoint(start_lat, start_lon);
             TMapPoint point2 = new TMapPoint(end_lat, end_lon);
             ArrayList passList = null; //경유지 List
-            Log.e("넘어온 데이터 start_lat",""+start_lat);
-            Log.e("넘어온 데이터 start_lon",""+start_lon);
-            Log.e("넘어온 데이터 end_lat",""+end_lat);
-            Log.e("넘어온 데이터 end_lon",""+end_lon);
+
 
             //searchOption 부여하여 경로 그리기
             tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
@@ -620,76 +616,28 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         //passList_mid를 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1031) {
             bt_return_result.setVisibility(View.VISIBLE);
-            start_lat = bundle.getDouble("start_lat");
-            start_lon = bundle.getDouble("start_lon");
-            end_lat = bundle.getDouble("end_lat");
-            end_lon = bundle.getDouble("end_lon");
-            passList_mid = bundle.getString("passList_mid");
-            Log.e("넘어온 passList_mid",passList_mid);
-            String pass[] =passList_mid.split(",");
-            Log.e("문자열split","[1]"+Double.parseDouble(pass[1])+" [2]"+Double.parseDouble(pass[0]));
+            String passString[] = setPoint("passList_mid");
 
             //넘어온 데이터로 polyline 그리기
-            TMapData tMapData = new TMapData();
-            final TMapPoint point1 = new TMapPoint(start_lat, start_lon);
-            TMapPoint point2 = new TMapPoint(end_lat, end_lon);
-            ArrayList passList = new ArrayList(); //경유지 List
-            TMapPoint passPoint = new TMapPoint(Double.parseDouble(pass[1]), Double.parseDouble(pass[0]));
-            passList.add(passPoint);
-
-
-            //searchOption 부여하여 경로 그리기
-            tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
-                    new TMapData.FindPathDataListenerCallback() {
-                        @Override
-                        public void onFindPathData(TMapPolyLine polyLine) {
-                            Log.e("폴리라인 그리기","passList_mid");
-                            mapView.addTMapPath(polyLine);
-                            mapView.setCenterPoint(point1.getLongitude(),point1.getLatitude());
-                        }
-
-                    });
+            polyLine(passString);
+            
             recording = false;
             autoRecord();
 
             pointList = Fragment2.pointList_mid;
             extra_point = Fragment2.extra_point4;
 
-
             GPShandler.sendEmptyMessage(0);
-
 
         }
 
         //passList2를 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1032) {
             bt_return_result.setVisibility(View.VISIBLE);
-            start_lat = bundle.getDouble("start_lat");
-            start_lon = bundle.getDouble("start_lon");
-            end_lat = bundle.getDouble("end_lat");
-            end_lon = bundle.getDouble("end_lon");
-            passList2 = bundle.getString("passList2");
-            String pass[] =passList2.split(",");
+            String passString[] = setPoint("passList2");
 
             //넘어온 데이터로 polyline 그리기
-            TMapData tMapData = new TMapData();
-            final TMapPoint point1 = new TMapPoint(start_lat, start_lon);
-            TMapPoint point2 = new TMapPoint(end_lat, end_lon);
-            ArrayList passList = new ArrayList(); //경유지 List
-            TMapPoint passPoint = new TMapPoint(Double.parseDouble(pass[1]), Double.parseDouble(pass[0]));
-            passList.add(passPoint);
-
-            //searchOption 부여하여 경로 그리기
-            tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
-                    new TMapData.FindPathDataListenerCallback() {
-                        @Override
-                        public void onFindPathData(TMapPolyLine polyLine) {
-                            Log.e("폴리라인 그리기","passList2");
-                            mapView.addTMapPath(polyLine);
-                            mapView.setCenterPoint(point1.getLongitude(),point1.getLatitude());
-                        }
-
-                    });
+            polyLine(passString);
 
             recording = false;
             autoRecord();
@@ -704,32 +652,10 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         //passList3을 넘겨받을 경우
         if(bundle!=null&&bundle.getInt("code")==1033) {
             bt_return_result.setVisibility(View.VISIBLE);
-            start_lat = bundle.getDouble("start_lat");
-            start_lon = bundle.getDouble("start_lon");
-            end_lat = bundle.getDouble("end_lat");
-            end_lon = bundle.getDouble("end_lon");
-            passList3 = bundle.getString("passList3");
-            String pass[] =passList3.split(",");
+            String passString[] = setPoint("passList3");
 
             //넘어온 데이터로 polyline 그리기
-            TMapData tMapData = new TMapData();
-            final TMapPoint point1 = new TMapPoint(start_lat, start_lon);
-            TMapPoint point2 = new TMapPoint(end_lat, end_lon);
-            ArrayList passList = new ArrayList(); //경유지 List
-            TMapPoint passPoint = new TMapPoint(Double.parseDouble(pass[1]), Double.parseDouble(pass[0]));
-            passList.add(passPoint);
-
-            //searchOption 부여하여 경로 그리기
-            tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
-                    new TMapData.FindPathDataListenerCallback() {
-                        @Override
-                        public void onFindPathData(TMapPolyLine polyLine) {
-                            Log.e("폴리라인 그리기","passList2");
-                            mapView.addTMapPath(polyLine);
-                            mapView.setCenterPoint(point1.getLongitude(),point1.getLatitude());
-                        }
-
-                    });
+            polyLine(passString);
 
             recording = false;
             autoRecord();
@@ -767,6 +693,46 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
         return dist;
     }
+    
+    public String[] setPoint(String passList){
+        start_lat = bundle.getDouble("start_lat");
+        start_lon = bundle.getDouble("start_lon");
+        end_lat = bundle.getDouble("end_lat");
+        end_lon = bundle.getDouble("end_lon");
+        passList_mid = bundle.getString(passList);
+        //Log.e("넘어온 passList_mid",passList_mid);
+        String[] pass =passList_mid.split(",");
+
+        return pass;
+    }
+
+    public void setPoint(){
+        start_lat = bundle.getDouble("start_lat");
+        start_lon = bundle.getDouble("start_lon");
+        end_lat = bundle.getDouble("end_lat");
+        end_lon = bundle.getDouble("end_lon");
+        //Log.e("넘어온 passList_mid",passList_mid);
+    }
+
+    public void polyLine(String[] pass){
+        TMapData tMapData = new TMapData();
+        final TMapPoint point1 = new TMapPoint(start_lat, start_lon);
+        TMapPoint point2 = new TMapPoint(end_lat, end_lon);
+        ArrayList passList = new ArrayList(); //경유지 List
+        TMapPoint passPoint = new TMapPoint(Double.parseDouble(pass[1]), Double.parseDouble(pass[0]));
+        passList.add(passPoint);
+
+        tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, point1, point2, passList, 10,
+                new TMapData.FindPathDataListenerCallback() {
+                    @Override
+                    public void onFindPathData(TMapPolyLine polyLine) {
+                        Log.e("폴리라인 그리기","passList_mid");
+                        mapView.addTMapPath(polyLine);
+                        mapView.setCenterPoint(point1.getLongitude(),point1.getLatitude());
+                    }
+
+                });
+    }
 
     public static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
@@ -784,6 +750,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         end_lon = 0.0;
 
     }
+    
     public void autoRecord(){
         btn_record.setVisibility(View.VISIBLE);
         TedPermission.with(mContext)
@@ -832,6 +799,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             }
         });
     }
+    
     PermissionListener permission = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
@@ -850,6 +818,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             Toast.makeText(mContext,"권한 거부",Toast.LENGTH_SHORT).show();
         }
     };
+    
     private SurfaceHolder.Callback surfaceListener = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
@@ -876,6 +845,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         public void surfaceDestroyed(SurfaceHolder holder) {
         }
     };
+    
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
 
