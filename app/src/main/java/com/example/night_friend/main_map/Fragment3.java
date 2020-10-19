@@ -30,6 +30,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
         Button button5 = v.findViewById(R.id.bt_call3);
         Button button6 = v.findViewById(R.id.bt_call4);
         Button sos_button = v.findViewById(R.id.bt_sos);
+        Button gallery_button = v.findViewById(R.id.bt_recording_save);
         Button imageButton = (Button)v.findViewById(R.id.bt_sos_setting);
 
         editText2 = (EditText) v.findViewById(R.id.et_call1);
@@ -93,7 +94,14 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+        gallery_button.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SOS_gallery.class);
+                startActivity(intent);
+            }
+        });
         imageButton.setOnClickListener(this);
 
         return v;

@@ -515,7 +515,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         input[0][5] = entertainN;
 
         model.run(input, output);
-        resultScore = Math.round(output[0][0] * 100) / 100.0;
+        resultScore = Math.abs(Math.round(output[0][0] * 100) / 100.0);
 
         Log.e("설정된 가로등 갯수: ", "" + lamp_cnt_list.size());
         Log.e("설정된 cctv 갯수: ", "" + cctv_cnt_list.size());
