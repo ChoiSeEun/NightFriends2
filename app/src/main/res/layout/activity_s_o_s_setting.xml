@@ -84,12 +84,12 @@
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.275" />
-
+    
     <CheckBox
-        android:id="@+id/cb_faster"
+        android:id="@+id/cb_112"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="긴급신고 사용"
+        android:text="112 신고"
         android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,12 +98,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363" />
 
+
     <CheckBox
-        android:id="@+id/ch_cctv"
+        android:id="@+id/cb_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="112 신고"
+        android:layout_marginEnd="64dp"
         android:enabled="false"
+        android:text="모두에게 연락"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.648"
@@ -111,18 +113,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363" />
 
-    <CheckBox
-        android:id="@+id/cb_criminal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="모두에게 연락"
-        android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.171"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cb_faster"
-        app:layout_constraintVertical_bias="0.049" />
 
     <EditText
         android:id="@+id/editText"
