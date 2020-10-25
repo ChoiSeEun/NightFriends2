@@ -289,26 +289,27 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
     long prev = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_DOWN: {
+        if(SOS_setting.autoSwitchState!=false){
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_VOLUME_DOWN: {
 
-                if (SystemClock.elapsedRealtime() - prev > 1000)
-                    count = 0;
-                if (count == 0) {
-                    start = SystemClock.elapsedRealtime();
-                    Log.d("start time", String.valueOf(start));
-                }
-                prev = SystemClock.elapsedRealtime();
-                count++;
-                Log.d("count", String.valueOf(count));
-                Log.d("prev time", String.valueOf(prev));
+                    if (SystemClock.elapsedRealtime() - prev > 1000)
+                        count = 0;
+                    if (count == 0) {
+                        start = SystemClock.elapsedRealtime();
+                        Log.d("start time", String.valueOf(start));
+                    }
+                    prev = SystemClock.elapsedRealtime();
+                    count++;
+                    Log.d("count", String.valueOf(count));
+                    Log.d("prev time", String.valueOf(prev));
 
-                if (count == 4 && prev - start < 2000) {
-                    Log.d("log****", String.valueOf(prev - start));
-                    showMessage();
+                    if (count == 4 && prev - start < 2000) {
+                        Log.d("log****", String.valueOf(prev - start));
+                        showMessage();
+                    }
                 }
             }
-
         }
 
         return true;
