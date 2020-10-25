@@ -24,7 +24,8 @@ public class SOS_setting extends AppCompatActivity {
     EditText phone2, phone3, phone4;
     public static Context context_setting;
     public String ph1,ph2,ph3,ph4;
-    private TextView tell1;
+    public static boolean autoSwitchState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,8 @@ public class SOS_setting extends AppCompatActivity {
         Switch autoSwitch=(Switch)findViewById(R.id.sw_matching);
         Switch sosSwitch=(Switch)findViewById(R.id.switch2);
 
-        cb_sos=findViewById(R.id.cb_faster);
-        cb_112=findViewById(R.id.ch_cctv);
-        cb_all=findViewById(R.id.cb_criminal);
+        cb_112=findViewById(R.id.cb_112);
+        cb_all=findViewById(R.id.cb_all);
 
         ImageButton add1=(ImageButton)findViewById(R.id.bt_guide_search);
         ImageButton add2=(ImageButton)findViewById(R.id.bt_refresh);
@@ -76,14 +76,25 @@ public class SOS_setting extends AppCompatActivity {
         phone3.setText(save3);
         phone4.setText(save4);
 
+        SharedPreferences sharedPreferences =getSharedPreferences("sfile",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+
+        autoSwitchState = sharedPreferences.getBoolean("switchkey", true);
+        autoSwitch.setChecked(autoSwitchState);
 
         autoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(),"switch on",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"자동신고 기능 on",Toast.LENGTH_LONG).show();
+                    autoSwitchState=true;
+                    editor.putBoolean("switchkey", true);
+                    editor.commit();
                 }else{
-                    Toast.makeText(getApplicationContext(),"switch off",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"자동신고 기능 off",Toast.LENGTH_LONG).show();
+                    autoSwitchState=false;
+                    editor.putBoolean("switchkey", false);
+                    editor.commit();
                 }
             }
         });
@@ -93,25 +104,12 @@ public class SOS_setting extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     Toast.makeText(getApplicationContext(),"switch on",Toast.LENGTH_LONG).show();
-                    cb_sos.setEnabled(true);
                     cb_112.setEnabled(true);
                     cb_all.setEnabled(true);
                 }else{
                     Toast.makeText(getApplicationContext(),"switch off",Toast.LENGTH_LONG).show();
-                    cb_sos.setEnabled(false);
                     cb_112.setEnabled(false);
                     cb_all.setEnabled(false);
-                }
-            }
-        });
-
-        cb_sos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(cb_sos.isChecked()==true){
-                    Toast.makeText(SOS_setting.this,"sos 사용: "+cb_sos.isChecked(), Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(SOS_setting.this,"sos 사용: "+cb_sos.isChecked(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -138,6 +136,7 @@ public class SOS_setting extends AppCompatActivity {
             }
         });
 
+        //연락처 추가
         add1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -147,8 +146,8 @@ public class SOS_setting extends AppCompatActivity {
                 intent.putExtra("name1",name1.getText().toString());
                 //ph1=phone1.getText().toString();
 
-                SharedPreferences sharedPreferences =getSharedPreferences("sfile",MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
+                //SharedPreferences sharedPreferences =getSharedPreferences("sfile",MODE_PRIVATE);
+                //SharedPreferences.Editor editor=sharedPreferences.edit();
 
                 String name_txt=name1.getText().toString();
                 String text=phone1.getText().toString();
@@ -173,8 +172,8 @@ public class SOS_setting extends AppCompatActivity {
                 intent.putExtra("phone2",phone2.getText().toString());
                 intent.putExtra("name2",name2.getText().toString());
 
-                SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
+                //SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
+                //SharedPreferences.Editor editor=sharedPreferences.edit();
 
                 String name_txt=name2.getText().toString();
                 String text=phone2.getText().toString();
@@ -198,8 +197,8 @@ public class SOS_setting extends AppCompatActivity {
                 intent.putExtra("phone3",phone3.getText().toString());
                 intent.putExtra("name3",name3.getText().toString());
 
-                SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
+                //SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
+                //SharedPreferences.Editor editor=sharedPreferences.edit();
 
                 String name_txt=name3.getText().toString();
                 String text=phone3.getText().toString();
@@ -223,8 +222,8 @@ public class SOS_setting extends AppCompatActivity {
                 intent.putExtra("phone4",phone4.getText().toString());
                 intent.putExtra("name4",name4.getText().toString());
 
-                SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
+                //SharedPreferences sharedPreferences = getSharedPreferences("sfile",MODE_PRIVATE);
+                //SharedPreferences.Editor editor=sharedPreferences.edit();
 
                 String name_txt=name4.getText().toString();
                 String text=phone4.getText().toString();
