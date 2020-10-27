@@ -306,6 +306,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
 
                     if(distance2(x1,y1,gpsLatitude,gpsLongitude)<15){
                         isOut = false;
+                        isOutCnt=0;
                         Log.d("경로이탈 ","false");
                         break;
                     }
@@ -318,14 +319,15 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                     String[] ele1 = extra_point.get(i).split(",");
 
                     if(!ele1[0].isEmpty() && !ele1[1].isEmpty()) {
-                        x1 = Double.parseDouble(ele1[0]);
-                        y1 = Double.parseDouble(ele1[1]);
+                        y1 = Double.parseDouble(ele1[0]);
+                        x1 = Double.parseDouble(ele1[1]);
                         //Log.e("extra x1,y1 ", "" + x1 + ", " + y1);
                     }
 
 
                     if(distance2(x1,y1,gpsLatitude,gpsLongitude)<15){
                         isOut = false;
+                        isOutCnt=0;
                         Log.d("경로이탈 ","false");
                         break;
                     }
@@ -350,8 +352,9 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                         dialogCnt=0;
                     }
 
-                    if(isOutCnt>5 && dialogCnt==0 && SOS_setting.autoSwitchState==true){
+                    if(isOutCnt>5 && dialogCnt==0){
                         dialogCnt++;
+                        isOutCnt=0;
                         lastLocation = new TMapPoint(gpsLatitude, gpsLongitude);
                         //Log.e("lastLocation: ",gpsLatitude+","+gpsLongitude);
                         try {
