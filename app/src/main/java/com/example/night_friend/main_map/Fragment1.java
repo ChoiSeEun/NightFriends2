@@ -333,6 +333,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                 }
 
                 if(isOut==true){
+                    isOutCnt++;
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     dialog = builder.setMessage("경로를 이탈하였습니다.").setPositiveButton("확인",null).create();
                     dialog.show();
@@ -349,7 +350,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                         dialogCnt=0;
                     }
 
-                    if(isOutCnt>5 && dialogCnt==0){
+                    if(isOutCnt>5 && dialogCnt==0 && SOS_setting.autoSwitchState==true){
                         dialogCnt++;
                         lastLocation = new TMapPoint(gpsLatitude, gpsLongitude);
                         //Log.e("lastLocation: ",gpsLatitude+","+gpsLongitude);
@@ -1124,12 +1125,27 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
             @Override
             public void run() {
                 dialog.dismiss();
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage("5556", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
                 sosPhoneNum = SOS_setting.phone1.getText().toString();
                 Log.e("sosPhoneNum: ", sosPhoneNum);
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage("5556", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:112"));
                 startActivity(intent);
+                
+                /*if(SOS_setting.callAllState==false) {
+                    if (sosPhoneNum != null) {
+                        sms.sendTextMessage("5556", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
+                    }
+                }*/
+               
+                /*if(SOS_setting.callPoliceState==true) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:112"));
+                    startActivity(intent);
+                }
+                if(SOS_setting.callPoliceState==false){
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+sosPhoneNum));
+                    startActivity(intent);
+                }*/
             }
         },5000);
 
