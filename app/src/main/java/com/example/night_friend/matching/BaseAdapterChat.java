@@ -47,16 +47,23 @@ public class BaseAdapterChat extends BaseAdapter {
 
         if(item.getName().equals(s_id)){
             itemLayout = mLayoutInflater.inflate(R.layout.list_chat_layout,parent,false);
+            TextView name=(TextView)itemLayout.findViewById(R.id.tv_chatName);
+            name.setText(mData.get(position).getName());
+        }
+        else if(item.getName().equals("success")){
+            itemLayout = mLayoutInflater.inflate(R.layout.successchat_layout,parent,false);
         }
         else{
             itemLayout = mLayoutInflater.inflate(R.layout.other_chat_layout,parent,false);
+            TextView name=(TextView)itemLayout.findViewById(R.id.tv_chatName);
+            name.setText(mData.get(position).getName());
         }
 
-        TextView name=(TextView)itemLayout.findViewById(R.id.tv_chatName);
+        //TextView name=(TextView)itemLayout.findViewById(R.id.tv_chatName);
         TextView msg=(TextView)itemLayout.findViewById(R.id.tv_chatMsg);
 
 
-        name.setText(mData.get(position).getName());
+        //name.setText(mData.get(position).getName());
         msg.setText(String.valueOf(mData.get(position).getMsg()) );
 
 

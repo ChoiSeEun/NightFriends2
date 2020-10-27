@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import static com.example.night_friend.main_map.Fragment4.code;
 
-public class Fragment4_search extends AppCompatActivity {
+public class Fragment1_search extends AppCompatActivity {
 
     ListView mListView = null;
     BaseAdapterSearch mAdapter = null;
@@ -95,12 +95,7 @@ public class Fragment4_search extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.matching, Fragment4);
-                fragmentTransaction.commit();
-                 */
+
 
                 //Intent intent = new Intent(this, ct);
                 Locationitem item = destList.get(position);
@@ -130,43 +125,6 @@ public class Fragment4_search extends AppCompatActivity {
 
                 }
 
-
-                // 도착지 가져오기
-                if(code==103){
-                    et_dest2.setHint("목적지를 입력하세요");
-                    //String destPlace = item.getPlace_name();
-                    //double destLat = item.getX();
-                    //double destLon = item.getY();
-                    //Fragment4.newInstance(destPlace, 103, destLat, destLon);
-
-                }
-
-
-                // 출발지 가져오기
-                if(code == 104){
-                    et_dest2.setHint("출발지를 입력하세요");
-                    String startPlace = item.getPlace_name();
-                    double userLat = item.getX();
-                    double userLon = item.getY();
-                   // Fragment4.newInstance(startPlace,104,userLat, userLon);
-                   /* String destPlace = item.getPlace_name();
-                    double destLat = item.getX();
-                    double destLon = item.getY();
-                    Intent intent = new Intent(Fragment4_search.this, Night_main.class);
-                    intent.putExtra("destLat",destLat);
-                    intent.putExtra("destLon",destLon);
-                    intent.putExtra("destPlace",destPlace);
-                    intent.putExtra("code",104);
-                    startActivity(intent);*/
-
-                }
-
-                Intent intent = new Intent(Fragment4_search.this, Night_main.class);
-                intent.putExtra("destLat",destLat);
-                intent.putExtra("destLon",destLon);
-                intent.putExtra("destPlace",destPlace);
-                intent.putExtra("code",104);
-                startActivity(intent);
 
                 /*
                 Bundle bundle = new Bundle();
@@ -234,30 +192,7 @@ public class Fragment4_search extends AppCompatActivity {
         return destList;
     }
 
-    /*
-    public void SearchLocation() {
-        bt_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String query = et_search.getText().toString();
-                    int radius = 10000; // 중심 좌표부터의 반경거리. 특정 지역을 중심으로 검색하려고 할 경우 사용. meter 단위 (0 ~ 10000)
-                    int page = 1; // 페이지 번호 (1 ~ 3). 한페이지에 15개
-                    //String apikey = "a3e79593add64289f981c6e7b13d1a92";
-                    //SearchInfo search= new SearchInfo(query, lat, lon, radius, page);
-                    Fragment1.SearchInfo thread = new Fragment1.SearchInfo(query, lat, lon, radius, page);
-                    thread.start();
-                    List<Locationitem> itemList = thread.getList();
-                    for (int i = 0; i < itemList.size(); i++) {
-                        Locationitem item = itemList.get(i);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-     */
+
 
 
 }
