@@ -151,10 +151,10 @@ public class GuideActivity extends AppCompatActivity {
         adapter = new GuideAdapter();
 
         //리스트 추가
-        adapter.addItem(new Matching_list(time,"티맵 추천 경로",safe_score,"매칭"));
-        adapter.addItem(new Matching_list(time_mid,"경유1",safe_score_mid,"매칭"));
-        adapter.addItem(new Matching_list(time2,"경유2",safe_score2,"매칭"));
-        adapter.addItem(new Matching_list(time3, "경유3",safe_score3,"매칭"));
+        adapter.addItem(new Matching_list(time,"최단 경로",safe_score,"매칭"));
+        adapter.addItem(new Matching_list(time_mid,"밤길친구 경로1",safe_score_mid,"매칭"));
+        adapter.addItem(new Matching_list(time2,"밤길친구 경로2",safe_score2,"매칭"));
+        adapter.addItem(new Matching_list(time3, "밤길친구 경로3",safe_score3,"매칭"));
         //adapter.addItem(new Matching_list("38분","***->***->****->***","68%","매칭"));
         listView.setAdapter(adapter);
     }
