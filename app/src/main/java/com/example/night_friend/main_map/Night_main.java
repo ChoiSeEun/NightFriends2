@@ -61,27 +61,28 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bottombar_main);
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.add(R.id.container, Fragment2.newInstance(null)).commit();
-        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        Intent intent_login = getIntent();
-        String userID = intent_login.getStringExtra("userID");
-        /*DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.drawer_userid);
-        navUsername.setText(userID);*/
+        setContentView(R.layout.drawer_main);
         fragment1 = new Fragment1();
         fragment2 = new Fragment2();
         fragment3 = new Fragment3();
         fragment4 = new Fragment4();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment1).commit();
+        //fragmentTransaction.add(R.id.container, Fragment2.newInstance(null)).commit();
+        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Intent intent_login = getIntent();
+        String userID = intent_login.getStringExtra("userID");
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavController navController = Navigation.findNavController(this, R.id.container);
+        NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.drawer_userid);
+        navUsername.setText(userID);
+
 //메뉴 이벤트
-        /*navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
@@ -92,10 +93,10 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
 
                     case R.id.nav_logout://로그아웃+++++++++++++여기서부터 다시
                         Log.i("logout", "logout");
-                    //new AlertDialog.Builder(getApplicationContext())
-                            //.setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
-                            //.setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
-                                //public void onClick(DialogInterface dialog, int whichButton) {
+                        //new AlertDialog.Builder(getApplicationContext())
+                        //.setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
+                        //.setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
+                        //public void onClick(DialogInterface dialog, int whichButton) {
 
 
                         // Intent i = new Intent(Night_main.this//현재 액티비티 위치 , LoginActivity.class//이동 액티비티 위치);
@@ -116,8 +117,8 @@ public class Night_main extends AppCompatActivity implements AutoPermissionsList
 
                 return true;
             }
-        });*/
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment1).commit();
+        });
+
 
         Intent intent = getIntent();
 
