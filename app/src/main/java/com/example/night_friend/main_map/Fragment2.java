@@ -388,7 +388,7 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
             if (isCount == true) {
                 lamp_cnt_list.add(lamp_x);
-                Log.e("lamp: ","xpos: "+lamp_x+" ypos: "+lamp_y+"  lampcount: "+lamp_cnt_list.size());
+                //Log.e("lamp: ","xpos: "+lamp_x+" ypos: "+lamp_y+"  lampcount: "+lamp_cnt_list.size());
             }
         }
 
