@@ -84,7 +84,7 @@
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.275" />
-    
+
     <CheckBox
         android:id="@+id/cb_112"
         android:layout_width="wrap_content"
@@ -98,12 +98,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363" />
 
-
     <CheckBox
         android:id="@+id/cb_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="76dp"
         android:enabled="false"
         android:text="모두에게 연락"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -113,9 +112,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.363" />
 
-
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/set_name1"
         android:layout_width="95dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -129,7 +127,7 @@
         app:layout_constraintVertical_bias="0.604" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/set_name2"
         android:layout_width="95dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -139,11 +137,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/set_name1"
         app:layout_constraintVertical_bias="0.065" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/set_name3"
         android:layout_width="95dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -153,11 +151,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5"
+        app:layout_constraintTop_toBottomOf="@+id/set_name2"
         app:layout_constraintVertical_bias="0.088" />
 
     <EditText
-        android:id="@+id/editText10"
+        android:id="@+id/set_name4"
         android:layout_width="95dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -167,11 +165,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText6"
+        app:layout_constraintTop_toBottomOf="@+id/set_name3"
         app:layout_constraintVertical_bias="0.081" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/set_phone1"
         android:layout_width="189dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -180,12 +178,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.141"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/set_name1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.604" />
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/set_phone2"
         android:layout_width="189dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -194,12 +192,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.141"
-        app:layout_constraintStart_toEndOf="@+id/editText5"
-        app:layout_constraintTop_toBottomOf="@+id/editText4"
+        app:layout_constraintStart_toEndOf="@+id/set_name2"
+        app:layout_constraintTop_toBottomOf="@+id/set_phone1"
         app:layout_constraintVertical_bias="0.065" />
 
     <EditText
-        android:id="@+id/editText9"
+        android:id="@+id/set_phone3"
         android:layout_width="189dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -208,12 +206,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.141"
-        app:layout_constraintStart_toEndOf="@+id/editText6"
-        app:layout_constraintTop_toBottomOf="@+id/editText8"
+        app:layout_constraintStart_toEndOf="@+id/set_name3"
+        app:layout_constraintTop_toBottomOf="@+id/set_phone2"
         app:layout_constraintVertical_bias="0.088" />
 
     <EditText
-        android:id="@+id/editText11"
+        android:id="@+id/set_phone4"
         android:layout_width="189dp"
         android:layout_height="44dp"
         android:ems="10"
@@ -222,12 +220,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.141"
-        app:layout_constraintStart_toEndOf="@+id/editText10"
-        app:layout_constraintTop_toBottomOf="@+id/editText9"
+        app:layout_constraintStart_toEndOf="@+id/set_name4"
+        app:layout_constraintTop_toBottomOf="@+id/set_phone3"
         app:layout_constraintVertical_bias="0.081" />
 
     <ImageButton
-        android:id="@+id/bt_guide_search"
+        android:id="@+id/bt_add1"
         android:layout_width="42dp"
         android:layout_height="57dp"
         android:layout_marginEnd="24dp"
@@ -237,14 +235,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editText4"
+        app:layout_constraintStart_toEndOf="@+id/set_phone1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.596"
         app:srcCompat="@android:drawable/ic_menu_add"
         tools:srcCompat="@drawable/add" />
 
     <ImageButton
-        android:id="@+id/bt_refresh"
+        android:id="@+id/bt_add2"
         android:layout_width="42dp"
         android:layout_height="57dp"
         android:layout_marginEnd="24dp"
@@ -254,14 +252,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editText8"
-        app:layout_constraintTop_toBottomOf="@+id/bt_guide_search"
+        app:layout_constraintStart_toEndOf="@+id/set_phone2"
+        app:layout_constraintTop_toBottomOf="@+id/bt_add1"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_add"
         tools:srcCompat="@drawable/add" />
 
     <ImageButton
-        android:id="@+id/bt_cancle"
+        android:id="@+id/bt_add3"
         android:layout_width="42dp"
         android:layout_height="57dp"
         android:layout_marginEnd="24dp"
@@ -271,14 +269,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editText9"
-        app:layout_constraintTop_toBottomOf="@+id/bt_refresh"
+        app:layout_constraintStart_toEndOf="@+id/set_phone3"
+        app:layout_constraintTop_toBottomOf="@+id/bt_add2"
         app:layout_constraintVertical_bias="0.025"
         app:srcCompat="@android:drawable/ic_menu_add"
         tools:srcCompat="@drawable/add" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/bt_add4"
         android:layout_width="42dp"
         android:layout_height="57dp"
         android:layout_marginEnd="24dp"
@@ -288,8 +286,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editText11"
-        app:layout_constraintTop_toBottomOf="@+id/bt_cancle"
+        app:layout_constraintStart_toEndOf="@+id/set_phone4"
+        app:layout_constraintTop_toBottomOf="@+id/bt_add3"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_add"
         tools:srcCompat="@drawable/add" />
