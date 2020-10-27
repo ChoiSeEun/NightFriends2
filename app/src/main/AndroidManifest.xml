@@ -28,6 +28,7 @@
         <activity android:name=".matching.Matching_setting" />
         <activity android:name=".matching.Matching_map" />
         <activity android:name=".main_map.SOS_setting" />
+        <activity android:name=".main_map.SOS_gallery"/>
         <activity android:name=".main_map.Fragment4_search" />
         <activity android:name=".matching.Matching_chat"/>
         <activity android:name=".matching.ChatRoom_list"/>
