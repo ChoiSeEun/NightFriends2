@@ -1035,19 +1035,26 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
         double x, y;
         for (int i = 0; i < cctvlist.size(); i++) {
             if(cctvlist.get(i).getXpos()!=0 && cctvlist.get(i).getYpos()!=0) {
+                    TMapPoint leftTop = mapView.getLeftTopPoint();
+                    TMapPoint rightBottom = mapView.getRightBottomPoint();
 
-                TMapMarkerItem mk = new TMapMarkerItem();
+
                 x = cctvlist.get(i).getXpos();
                 y = cctvlist.get(i).getYpos();
-                mp = new TMapPoint(x,y);
-                //Log.d("cctv", "Latitude: " + x + ", Longitude: " + y);
-                Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.camera);
+                if(leftTop.getLatitude()>x && rightBottom.getLatitude()<x && leftTop.getLongitude()<y && rightBottom.getLongitude()>y) {
+                    mp = new TMapPoint(x, y);
+                    TMapMarkerItem mk = new TMapMarkerItem();
+                    Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.camera);
 
 
-                mk.setName("cctv");
-                mk.setIcon(bitmap);
-                mk.setTMapPoint(mp);
-                mapView.addMarkerItem("markerItem" + i, mk);
+                    //Log.d("cctv", "Latitude: " + x + ", Longitude: " + y);
+
+
+                    mk.setName("cctv");
+                    mk.setIcon(bitmap);
+                    mk.setTMapPoint(mp);
+                    mapView.addMarkerItem("markerItem" + i, mk);
+                }
 
             }
         }
