@@ -200,7 +200,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                 Toast.makeText(this.getActivity(), "Result: " + data.getStringExtra("phone1"), Toast.LENGTH_SHORT).show();
             }
             if (resultCode == 2) {
-                return_name2 = data.getStringExtra("name1");
+                return_name2 = data.getStringExtra("name2");
                 call2.setText(return_name2);
                 p2 = data.getStringExtra("phone2");
                 Log.d("result2",return_name2+","+p2);
