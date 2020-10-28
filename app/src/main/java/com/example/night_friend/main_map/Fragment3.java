@@ -88,7 +88,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 //String data=editText2.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + save_phone1));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + p1));
                 startActivity(intent);
             }
         });
@@ -97,7 +97,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 //String data = editText3.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + save_phone2));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + p2));
                 startActivity(intent);
             }
         });
@@ -106,7 +106,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 //String data = editText7.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + save_phone3));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + p3));
                 startActivity(intent);
             }
         });
@@ -115,7 +115,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View view) {
                 //String data = editText12.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + save_phone4));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + p4));
                 startActivity(intent);
             }
         });
@@ -129,7 +129,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                     startActivity(intent);
                 }
                 if(SOS_setting.callPoliceState==false){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"+save_phone1));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"+p1));
                     startActivity(intent);
                 }
                 if(SOS_setting.callAllState==true){
