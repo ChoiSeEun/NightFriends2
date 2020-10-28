@@ -960,7 +960,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                 if(leftTop.getLatitude()>x && rightBottom.getLatitude()<x && leftTop.getLongitude()<y && rightBottom.getLongitude()>y){
                     mp = new TMapPoint(x, y);
                     TMapMarkerItem mk = new TMapMarkerItem();
-                    Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
+                    Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.lamp);
 
                     mk.setName("가로등");
                     mk.setIcon(bitmap);
@@ -1041,7 +1041,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                 y = cctvlist.get(i).getYpos();
                 mp = new TMapPoint(x,y);
                 //Log.d("cctv", "Latitude: " + x + ", Longitude: " + y);
-                Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.poi);
+                Bitmap bitmap = itmapFactory.decodeResource(mContext.getResources(), R.drawable.camera);
 
 
                 mk.setName("cctv");
