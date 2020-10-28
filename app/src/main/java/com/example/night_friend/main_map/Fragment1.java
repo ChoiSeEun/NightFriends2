@@ -793,7 +793,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                                 recording = true;
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Toast.makeText(mContext, "오류가 발생하였습니다", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(mContext, "오류가 발생하였습니다", Toast.LENGTH_SHORT).show();
                                 mediaRecorder.release();
                                 mediaRecorder = null;
                             }
