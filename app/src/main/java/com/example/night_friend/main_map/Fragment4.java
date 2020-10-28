@@ -77,7 +77,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
         Log.e("받아온 이름: ",place);
         Log.e("코드/위경도: ", code+" / "+lat+", "+lon);
 
-        if(code==103){
+        if(code==105){
             destPlace = place;
             destLat = lat;
             destLon = lon;
@@ -86,7 +86,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
             //Log.e("도착 위치: ", endName);
         }
 
-        else if(code==104){
+        else if(code==106){
             startPlace = place;
             userLat = lat;
             userLon = lon;
@@ -167,9 +167,9 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                     case MotionEvent.ACTION_DOWN: {
                         //터치했을 때의 이벤트
                         //try{
-                        code=103;
+                        code=105;
 
-                        Intent intent = new Intent(getActivity(),Fragment4_search.class);
+                        Intent intent = new Intent(getActivity(),Fragment1_search.class);
                         startActivity(intent);
                         ///}catch (InflateException e){
                         // 검색창 View가 이미 inflate되어 있는 상태이므로, 에러를 무시합니다.
@@ -190,8 +190,8 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                     case MotionEvent.ACTION_DOWN: {
                         //터치했을 때의 이벤트
                         //try{
-                        code = 104;
-                        Intent intent = new Intent(getActivity(),Fragment4_search.class);
+                        code = 106;
+                        Intent intent = new Intent(getActivity(),Fragment1_search.class);
                         startActivity(intent);
                         ///}catch (InflateException e){
                         // 검색창 View가 이미 inflate되어 있는 상태이므로, 에러를 무시합니다.

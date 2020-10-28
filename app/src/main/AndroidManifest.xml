@@ -24,12 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main_map.AutoRecordActivity"/>
+        <activity android:name="main_map.AutoRecordActivity"/>
         <activity android:name=".matching.Matching_setting" />
         <activity android:name=".matching.Matching_map" />
-        <activity android:name=".main_map.SOS_setting" />
-        <activity android:name=".main_map.SOS_gallery"/>
+        <activity android:name="main_map.SOS_setting" />
         <activity android:name=".main_map.Fragment4_search" />
+        <activity android:name=".main_map.Fragment1_search" />
         <activity android:name=".matching.Matching_chat"/>
         <activity android:name=".matching.ChatRoom_list"/>
         <activity android:name=".Guide.GuideActivity"
