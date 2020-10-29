@@ -143,7 +143,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                 userLocation.user_Map(Constant.DELETE_URL,userID, userLat, userLon,destLat,destLon);
                 et_dest.setText("");
                 et_start.setText("");
-               // mAdapter.clear();
+                // mAdapter.clear();
             }
 
 
@@ -221,20 +221,8 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
                 onMapPoint();
                 Log.e("otherList2", String.valueOf(otherList.size()));
-                if(otherList.size()==0) {
-                    AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
-                    dlg.setTitle("매칭"); //제목
-                    dlg.setMessage("현재 매칭자가 없습니다."); // 메시지
-//                버튼 클릭시 동작
-                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            et_dest.setText("");
-                            et_start.setText("");
-                        }
-                    });dlg.show();
-                }else{
                     userLocation.user_Map(Constant.CREATE_URL,userID, userLat, userLon,destLat,destLon);
-                }
+
 
                 setAdapter();
 
@@ -283,7 +271,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
                 for(int j=0; j<otherList.size(); j++){
                     matching_data p =otherList.get(j);
-                    if(p.getId().equals(personList.get(i).getId()))
+                    if(p.getId().equals(personList.get(i).getId()) || p.getId().equals(userID))
                         doubled = true;
                 }
                 if(doubled ==false) {
@@ -355,11 +343,13 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
                     for(int j=0; j<personList.size(); j++){
                         matching_data p =personList.get(j);
-                        if(p.getId().equals(id) )
+                        if(p.getId().equals(id) || p.getId().equals(userID))
                             doubled = true;
                     }
-                    if(doubled ==false)
+                    if(doubled ==false){
                         personList.add(person);
+
+                    }
 
 
                 }

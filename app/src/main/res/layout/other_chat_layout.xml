@@ -28,14 +28,4 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tv_chatTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/tv_chatMsg"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="false"
-        android:text="시간"
-        android:textSize="16sp" />
 </RelativeLayout>

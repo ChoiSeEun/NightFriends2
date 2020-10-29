@@ -135,7 +135,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                 if(SOS_setting.callAllState==true){
                     SmsManager sms = SmsManager.getDefault();
                     if(save_phone1!=null) {
-                        sms.sendTextMessage("5556", null, "긴급신고 요청", null, null);
+                        sms.sendTextMessage("01011111111", null, "긴급신고 요청", null, null);
                     }
                     if(save_phone2!=null) {
                         sms.sendTextMessage("5556", null, "긴급신고 요청", null, null);
@@ -150,7 +150,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                 }
                 if(SOS_setting.callAllState==false){
                     SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage("5556", null, "긴급신고 요청", null, null);
+                    sms.sendTextMessage("01011111111", null, "긴급신고 요청", null, null);
                 }
             }
         });

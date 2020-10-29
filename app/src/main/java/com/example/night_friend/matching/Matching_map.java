@@ -562,14 +562,14 @@ public class Matching_map extends AppCompatActivity implements TMapGpsManager.on
         TMapPoint tpoint = new TMapPoint(buslist.get(0).getYpos(),buslist.get(0).getXpos());
         TMapMarkerItem tItem = new TMapMarkerItem();
         tItem.setTMapPoint(tpoint);
-        tItem.setName("bus");
+        tItem.setName("버스 정류장");
         tItem.setVisible(TMapMarkerItem.VISIBLE);
 
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.poi);
         tItem.setIcon(bitmap);
         Log.e("tItem", String.valueOf(tItem.getTMapPoint().getLatitude()));
 
-        mapView.addMarkerItem("bus",tItem);
+        mapView.addMarkerItem("버스 정류장",tItem);
 
         return tpoint;
 

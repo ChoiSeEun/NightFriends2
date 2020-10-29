@@ -1138,7 +1138,7 @@ public class Fragment1 extends Fragment implements TMapGpsManager.onLocationChan
                 sosPhoneNum = SOS_setting.phone1.getText().toString();
                 Log.e("sosPhoneNum: ", sosPhoneNum);
                 SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage("5556", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
+                sms.sendTextMessage("01011111111", null, sosAddress, null, null); //다른 에뮬레이터로 문자 전송 => 실제 단말기에서는 sosPhoneNum 사용
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:112"));
                 startActivity(intent);
                 

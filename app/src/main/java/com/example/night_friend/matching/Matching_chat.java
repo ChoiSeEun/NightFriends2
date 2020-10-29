@@ -248,7 +248,7 @@ public class Matching_chat extends AppCompatActivity {
                         for(int i=0; i<ansList.size(); i++){
                             matching_data p = (matching_data) ansList.get(i);
 
-                            if(p.getId().equals(id)){
+                            if(p.getId().equals(m_id)){
                                 if(p.getUserAns()==1){
                                     Toast.makeText(getApplicationContext(), "매칭에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                                     ChatData data = new ChatData("success","매칭이 성공적으로 연결되었습니다.");
@@ -256,7 +256,7 @@ public class Matching_chat extends AppCompatActivity {
                                     btn_chatStart.setEnabled(false);
                                 }
                                 else if(p.getUserAns()==0){
-                                    Toast.makeText(getApplicationContext(), "매칭에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "매칭에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 
                                 }
                             }
@@ -379,7 +379,7 @@ public class Matching_chat extends AppCompatActivity {
                         // Log and toast
 
                         Log.e("FirebaseInstanceId", token);
-                        Toast.makeText(Matching_chat.this, token, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Matching_chat.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
