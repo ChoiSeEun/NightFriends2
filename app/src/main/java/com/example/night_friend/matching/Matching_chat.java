@@ -56,7 +56,7 @@ public class Matching_chat extends AppCompatActivity {
     private String name, msg;
     private BaseAdapterChat adapter;
     private BaseAdapter_Chatroom room_adapter;
-    private String m_id;
+    private String matching_id;
     DatabaseReference databaseReference;
     ArrayList mList, roomList, ansList;
     private String chat_room;
@@ -76,7 +76,6 @@ public class Matching_chat extends AppCompatActivity {
         setContentView(R.layout.activity_matching_chat);
 
         gPHP = new GetLocation();
-
         gPHP.execute(url);
 
         et_send = (EditText)findViewById(R.id.et_sendChat);
@@ -115,11 +114,13 @@ public class Matching_chat extends AppCompatActivity {
         //databaseReference.setValue("Hello, World!");
 
         Intent secondIntent = getIntent();
-        m_id = secondIntent.getStringExtra("matching_id");
+        matching_id = secondIntent.getStringExtra("matching_id");
         id= Fragment4.userID;
         getToken();
         chatDecide();
-        startChat(id,m_id);
+        startChat(id,matching_id);
+
+
 
         btn_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +233,10 @@ public class Matching_chat extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int dialogId)
                     {
-                        Toast.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
+                        //  userAns 값을 1(True)로 변환시키기
+                        userLocation.user_Map(Constant.ANS_URL,id, 1);
+
+                        //.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
 
                         // 매칭을 수락한다는 메세지 보내기
                         ChatData chatData = new ChatData(id, id+"님이 수락하였습니다");  // 유저 이름과 메세지로 chatData 만들기
@@ -240,15 +244,18 @@ public class Matching_chat extends AppCompatActivity {
                         et_send.setText("");
                         btn_chatCancel.setEnabled(false);
 
-                        //  userAns 값을 1(True)로 변환시키기
-                        userLocation.user_Map(Constant.ANS_URL,id, 1);
 
                         // userAns 값 1인지 비교
+
 
                         for(int i=0; i<ansList.size(); i++){
                             matching_data p = (matching_data) ansList.get(i);
 
-                            if(p.getId().equals(m_id)){
+                            Log.e("ansList: ",p.getId()+": "+p.getUserAns()+"m_id: "+matching_id);
+
+                            String ansId;
+
+                            if(p.getId().equals(matching_id)){
                                 if(p.getUserAns()==1){
                                     Toast.makeText(getApplicationContext(), "매칭에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                                     ChatData data = new ChatData("success","매칭이 성공적으로 연결되었습니다.");
@@ -271,7 +278,7 @@ public class Matching_chat extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
+                        //.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -347,9 +354,7 @@ public class Matching_chat extends AppCompatActivity {
 
                     ansList.add(person);
 
-
                 }
-
 
 
             } catch (JSONException e) {

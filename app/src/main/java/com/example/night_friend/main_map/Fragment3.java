@@ -129,7 +129,7 @@ public class Fragment3 extends Fragment implements View.OnClickListener {
                     startActivity(intent);
                 }
                 if(SOS_setting.callPoliceState==false){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"+p1));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:"+"122"));
                     startActivity(intent);
                 }
                 if(SOS_setting.callAllState==true){

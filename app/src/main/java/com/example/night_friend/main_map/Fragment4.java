@@ -117,7 +117,6 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
 
 
-
         //매칭,안전지수 모델
         matchings=new Matching_model(userLon,userLat);
         safety = new safety_model(getContext());
@@ -221,7 +220,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
                 onMapPoint();
                 Log.e("otherList2", String.valueOf(otherList.size()));
-                    userLocation.user_Map(Constant.CREATE_URL,userID, userLat, userLon,destLat,destLon);
+                userLocation.user_Map(Constant.CREATE_URL,userID, userLat, userLon,destLat,destLon);
 
 
                 setAdapter();
@@ -343,13 +342,15 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 
                     for(int j=0; j<personList.size(); j++){
                         matching_data p =personList.get(j);
-                        if(p.getId().equals(id) || p.getId().equals(userID))
+                        if(p.getId().equals(id) || id.equals(userID))
                             doubled = true;
                     }
                     if(doubled ==false){
                         personList.add(person);
 
                     }
+
+
 
 
                 }
