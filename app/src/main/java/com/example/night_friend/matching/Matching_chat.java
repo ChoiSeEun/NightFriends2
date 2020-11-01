@@ -1,4 +1,4 @@
-package com.example.night_friend.matching;
+﻿package com.example.night_friend.matching;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,7 +56,7 @@ public class Matching_chat extends AppCompatActivity {
     private String name, msg;
     private BaseAdapterChat adapter;
     private BaseAdapter_Chatroom room_adapter;
-    private String matching_id;
+    private String m_id;
     DatabaseReference databaseReference;
     ArrayList mList, roomList, ansList;
     private String chat_room;
@@ -76,6 +76,7 @@ public class Matching_chat extends AppCompatActivity {
         setContentView(R.layout.activity_matching_chat);
 
         gPHP = new GetLocation();
+
         gPHP.execute(url);
 
         et_send = (EditText)findViewById(R.id.et_sendChat);
@@ -114,13 +115,11 @@ public class Matching_chat extends AppCompatActivity {
         //databaseReference.setValue("Hello, World!");
 
         Intent secondIntent = getIntent();
-        matching_id = secondIntent.getStringExtra("matching_id");
+        m_id = secondIntent.getStringExtra("matching_id");
         id= Fragment4.userID;
         getToken();
         chatDecide();
-        startChat(id,matching_id);
-
-
+        startChat(id,m_id);
 
         btn_chatroom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +149,20 @@ public class Matching_chat extends AppCompatActivity {
                 chat_room = matching_id+"&"+id;
             }
             else{
-                chat_room =id+"&"+matching_id;
+                if(id.length()>matching_id.length())
+                    chat_room = id+"&"+matching_id;
+
+                else if(id.length()<matching_id.length())
+                    chat_room = matching_id+"&"+id;
+                else{
+                    if(id.charAt(id.length()-1)>matching_id.charAt(matching_id.length()-1))
+                        chat_room = id+"&"+matching_id;
+                    else if(id.charAt(id.length()-1)<matching_id.charAt(matching_id.length()-1))
+                        chat_room = id+"&"+matching_id;
+                    else
+                        chat_room = id+"&"+matching_id;
+                }
+
             }
         }
         else if(chatCode==1){
@@ -231,46 +243,52 @@ public class Matching_chat extends AppCompatActivity {
 
                 builder.setPositiveButton("확인", new DialogInterface.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int dialogId)
-                    {
-                        //  userAns 값을 1(True)로 변환시키기
-                        userLocation.user_Map(Constant.ANS_URL,id, 1);
-
-                        //.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int dialogId) {
+                        Toast.makeText(getApplicationContext(), "OK Click", Toast.LENGTH_SHORT).show();
 
                         // 매칭을 수락한다는 메세지 보내기
-                        ChatData chatData = new ChatData(id, id+"님이 수락하였습니다");  // 유저 이름과 메세지로 chatData 만들기
+                        ChatData chatData = new ChatData(id, id + "님이 수락하였습니다");  // 유저 이름과 메세지로 chatData 만들기
                         databaseReference.child(chat_room).push().setValue(chatData);  // 기본 database 하위 message라는 child에 chatData를 list로 만들기
                         et_send.setText("");
                         btn_chatCancel.setEnabled(false);
 
+                        //  userAns 값을 1(True)로 변환시키기
+                        userLocation.user_Map(Constant.ANS_URL, id, 1);
 
                         // userAns 값 1인지 비교
 
+                        matching_data m = null;
 
-                        for(int i=0; i<ansList.size(); i++){
+                        for (int i = 0; i < ansList.size(); i++) {
                             matching_data p = (matching_data) ansList.get(i);
 
-                            Log.e("ansList: ",p.getId()+": "+p.getUserAns()+"m_id: "+matching_id);
+                            if (p.getId().equals(matching_id))
+                                m = p;
 
-                            String ansId;
 
-                            if(p.getId().equals(matching_id)){
-                                if(p.getUserAns()==1){
+                            if (p.getId().equals(id)) {
+                                if (p.getUserAns() == 1) {
                                     Toast.makeText(getApplicationContext(), "매칭에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                    ChatData data = new ChatData("success","매칭이 성공적으로 연결되었습니다.");
+                                    ChatData data = new ChatData("success", "매칭이 성공적으로 연결되었습니다.");
                                     databaseReference.child(chat_room).push().setValue(data);
                                     btn_chatStart.setEnabled(false);
-                                }
-                                else if(p.getUserAns()==0){
-                                    //Toast.makeText(getApplicationContext(), "매칭에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                } else if (p.getUserAns() == 0) {
+                                    Toast.makeText(getApplicationContext(), "매칭에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 
                                 }
                             }
                         }
 
+                        if (m.getUserAns() == 1) {
+                            Toast.makeText(getApplicationContext(), "매칭에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                            ChatData data = new ChatData("success", "매칭이 성공적으로 연결되었습니다.");
+                            databaseReference.child(chat_room).push().setValue(data);
+                            btn_chatStart.setEnabled(false);
+                            //userLocation.user_Map(Constant.DELETE_URL,id, 0, 0,0,0);
+                        } else if (m.getUserAns() == 0) {
+                            //Toast.makeText(getApplicationContext(), "매칭에 실패하였습니다.", Toast.LENGTH_SHORT).show();
 
-
+                        }
                     }
                 });
 
@@ -278,7 +296,7 @@ public class Matching_chat extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        //.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Cancel Click", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -354,7 +372,9 @@ public class Matching_chat extends AppCompatActivity {
 
                     ansList.add(person);
 
+
                 }
+
 
 
             } catch (JSONException e) {
