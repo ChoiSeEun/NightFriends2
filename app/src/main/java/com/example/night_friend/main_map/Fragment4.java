@@ -222,7 +222,8 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                 Log.e("otherList2", String.valueOf(otherList.size()));
                 userLocation.user_Map(Constant.CREATE_URL,userID, userLat, userLon,destLat,destLon);
 
-
+                gPHP = new GetLocation();
+                gPHP.execute(url);
                 setAdapter();
 
             }
@@ -263,7 +264,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
             matching_data c = personList.get(i);
             double starting_dis=matchings.distance(userLat,userLon,personList.get(i).getUserLat(),personList.get(i).getUserLon(),"kilometer");
             double dest_dis=matchings.distance(destLat,destLon,personList.get(i).getDestLat(),personList.get(i).getDestLon(),"kilometer");
-            if((dest_dis<=2)&&(starting_dis<=2)){
+            if((dest_dis<=2)&&(starting_dis<=2)&&personList.get(i).getUserAns()==0){
                 userdistance user= new userdistance(personList.get(i).getId(),personList.get(i).getUserLat(),personList.get(i).getUserLon(),personList.get(i).getDestLat(),personList.get(i).getDestLon(),starting_dis+dest_dis);
                 // otherList 중복 수정
                 boolean doubled = false;
@@ -332,8 +333,10 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                     double Lon = c.getDouble("userLon");
                     double destlat=c.getDouble("destLat");
                     double destlon=c.getDouble("destLon");
+                    int userAns = c.getInt("userAns");
 
                     matching_data person = new matching_data(id,Lat,Lon,destlat,destlon);
+                    person.setUserAns(userAns);
 
                     Log.e("php person:",id+": "+Lat+", "+Lon+", "+destlat+", "+destlon+"size:"+personList.size());
 
